@@ -8,15 +8,15 @@
           <div class="card card-primary card-outline card-outline-tabs">
               <div class="card">
                   <div class="card-header">
-                      <h3 class="card-title">DATA AYAH </h3>
+                      <h3 class="card-title">DATA {{$data_warga->nama}} </h3>
                   </div>
 
                   <!-- /.card-header -->
                   <div class="card-body">
                       <div class="text-center">
-                          <a href="{{ asset($data_warga->foto) }}" data-toggle="lightbox" data-title="Foto Profile {{ Auth::user()->name }}" data-gallery="gallery" data-footer=' <form action="{{ Route('data-warga.update', Crypt::encrypt($data_warga->id)) }}" method="post" enctype="multipart/form-data">
+                          <a href="{{ asset($foto->foto) }}" data-toggle="lightbox" data-title="Foto Profile {{ Auth::user()->name }}" data-gallery="gallery" data-footer=' <form action="{{ Route('data-warga.update', Crypt::encrypt($data_warga->id)) }}" method="post" enctype="multipart/form-data">
                                         {{csrf_field()}}<input type="file" class="form-control"  name=" foto" id="foto"> <input type="hidden" class="form-control" name=" user" id="user" value=""> <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-file-upload"></i> </button></form>'>
-                              <img src="{{ asset( $data_warga->foto) }}" width="130px" class="profile-user-img img-fluid img-circle" alt="User profile picture">
+                              <img src="{{ asset( $foto->foto) }}" width="130px" class="profile-user-img img-fluid img-circle" alt="User profile picture">
                           </a>
                       </div>
                       <h3 class="profile-username text-center">{{ $data_warga->nama }}</h3>

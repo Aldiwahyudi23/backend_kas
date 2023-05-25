@@ -12,9 +12,10 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="text-center">
-                                    <a href="{{ asset($ibu->foto) }}" data-toggle="lightbox" data-title="Foto Profile {{ Auth::user()->name }}" data-gallery="gallery" data-footer=' <form action="{{ Route('data-warga.update', Crypt::encrypt($ibu->id)) }}" method="post" enctype="multipart/form-data">
-                                        {{csrf_field()}}<input type="file" class="form-control"  name=" foto" id="foto"> <input type="hidden" class="form-control" name=" user" id="user" value=""> <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-file-upload"></i> </button></form>'>
-                                        <img src="{{ asset( $ibu->foto) }}" width="130px" class="profile-user-img img-fluid img-circle" alt="User profile picture">
+                                    <a href="{{ asset($foto_user_ibu->foto) }}" data-toggle="lightbox" data-title="Foto Profile {{ Auth::user()->name }}" data-gallery="gallery" data-footer='<form action="{{ Route('data-warga.update', Crypt::encrypt($ibu->id)) }}" method="post" enctype="multipart/form-data">
+                                        {{csrf_field()}}
+                                        <input type="file" class="form-control"  name=" foto" id="foto"> <input type="hidden" class="form-control" name=" user" id="user" value=""> <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-file-upload"></i> </button></form>'>
+                                        <img src="{{ asset($foto_user_ibu->foto) }}" width="130px" class="profile-user-img img-fluid img-circle" alt="User profile picture">
                                     </a>
                                 </div>
                                 <h3 class="profile-username text-center">{{ $ibu->nama }}</h3>
@@ -119,6 +120,7 @@
                         <!-- /.card -->
                     </div>
                 </div>
+
                 <div class="col-12 col-sm-4">
                     <div class="card card-primary card-outline card-outline-tabs">
                         <div class="card-body">
@@ -129,37 +131,37 @@
 
                             <div class="form-group">
                                 <label>Provinsi:</label><br />
-                                <select name="provinsi" id="provinsi2" class=" form-control">
-                                    <option>Pilih</option>
+                                <select name="provinsi" id="provinsi2" class="form-control">
+                                    <option value="">Pilih</option>
                                 </select>
                             </div>
                             <div class=" form-group">
                                 <label>Kab/Kota:</label><br />
                                 <select name="kota" id="kota2" class="form-control">
-                                    <option>Pilih</option>
+                                    <option value="">Pilih</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Kecamatan:</label><br />
                                 <select name="kecamatan" id="kecamatan2" class="form-control">
-                                    <option>Pilih</option>
+                                    <option value="">Pilih</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Kelurahan:</label><br />
                                 <select name="kelurahan" id="kelurahan2" class="form-control">
-                                    <option>Pilih</option>
+                                    <option value="">Pilih</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="kampung">Jalan / Kampung</label> <br>
-                                <input type="text" name="kampung" id="kampung" class="form-control col-12">
+                                <input type="text" name="kampung" id="kampung" class="form-control col-12" value="">
                             </div>
                             <div class="form-group">
                                 <label for="rt/re">RT</label>
-                                <input type="number" name="rt" id="rw" class="  col-4">
+                                <input type="number" name="rt" id="rw" class="  col-4" value="">
                                 <label for="">RW</label>
-                                <input type="number" class=" col-4" name="rw" id="rw">
+                                <input type="number" class=" col-4" name="rw" id="rw" value="">
                             </div>
                         </div>
                         <!-- /.card -->
@@ -207,7 +209,6 @@
                                     <option value="{{old('status_pernikahan',$ibu->status_pernikahan)}}">{{old('status_pernikahan',$ibu->status_pernikahan)}}</option>
                                     @endif
                                     <option value="">-- Pilih Status Pernikahan --</option>
-                                    <option value="Belum Menikah">Belum Menikah</option>
                                     <option value="Menikah">Menikah</option>
                                     <option value="Cerai Hidup">Cerai Hidup</option>
                                     <option value="Cerai Mati">Cerai Mati</option>
@@ -224,9 +225,7 @@
                                     @if(old('status',$ibu->status) == true)
                                     <option value="{{old('status',$ibu->status)}}">{{old('status',$ibu->status)}}</option>
                                     @endif
-                                    <option value="">-- Pilih Status Pernikahan --</option>
-                                    <option value="Tidak Sekolah">Tidak Sekolah</option>
-                                    <option value="Sekolah">Sekolah</option>
+                                    <option value="">-- Pilih Status --</option>
                                     <option value="Bekerja">Bekerja</option>
                                     <option value="Tidak Bekerja">Tidak Bekerja</option>
                                 </select>

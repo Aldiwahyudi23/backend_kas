@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('data_warga_id')->references('id')->on('data_wargas');
             $table->string('foto');
-            $table->string('is_active');
+            $table->enum('is_active', ['1', '0']);
             $table->timestamps();
         });
     }

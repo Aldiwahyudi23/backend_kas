@@ -56,6 +56,7 @@
                         <!-- /.card -->
                     </div>
                 </div>
+
                 <div class="col-12 col-sm-4">
                     <div class="card card-primary card-outline card-outline-tabs">
                         <div class="card-body">
@@ -66,37 +67,37 @@
 
                             <div class="form-group">
                                 <label>Provinsi:</label><br />
-                                <select name="provinsi" id="provinsi" class=" form-control">
-                                    <option>Pilih</option>
+                                <select name="provinsi" id="provinsi3" class="form-control">
+                                    <option value="">Pilih</option>
                                 </select>
                             </div>
                             <div class=" form-group">
                                 <label>Kab/Kota:</label><br />
-                                <select name="kota" id="kota" class="form-control">
-                                    <option>Pilih</option>
+                                <select name="kota" id="kota3" class="form-control">
+                                    <option value="">Pilih</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Kecamatan:</label><br />
-                                <select name="kecamatan" id="kecamatan" class="form-control">
-                                    <option>Pilih</option>
+                                <select name="kecamatan" id="kecamatan3" class="form-control">
+                                    <option value="">Pilih</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Kelurahan:</label><br />
-                                <select name="kelurahan" id="kelurahan" class="form-control">
-                                    <option>Pilih</option>
+                                <select name="kelurahan" id="kelurahan3" class="form-control">
+                                    <option value="">Pilih</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="kampung">Jalan / Kampung</label> <br>
-                                <input type="text" name="kampung" id="kampung" class="form-control col-12">
+                                <input type="text" name="kampung" id="kampung" class="form-control col-12" value="">
                             </div>
                             <div class="form-group">
                                 <label for="rt/re">RT</label>
-                                <input type="number" name="rt" id="rw" class="  col-4">
+                                <input type="number" name="rt" id="rw" class="  col-4" value="">
                                 <label for="">RW</label>
-                                <input type="number" class=" col-4" name="rw" id="rw">
+                                <input type="number" class=" col-4" name="rw" id="rw" value="">
                             </div>
                         </div>
                         <!-- /.card -->

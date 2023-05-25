@@ -244,16 +244,22 @@
                     </thead>
 
                     <tbody>
-                        <?php $no = 0; ?>
+                        <?php
+
+                        use App\Models\FotoUser;
+
+                        $no = 0; ?>
                         @foreach($data_warga as $data)
-                        <?php $no++; ?>
+                        <?php $no++;
+                        $foto = FotoUser::where('data_warga_id', $data->id)->where('is_active', 1)->first();
+                        ?>
                         <tr>
                             <td>{{$no}}</td>
                             <td>
-                                <div class="text-center">
-                                    <a href="{{ asset($data->foto) }}" data-toggle="lightbox" data-title="Foto Profile {{ Auth::user()->name }}" data-gallery="gallery" data-footer=' <form action="{{ Route('data-warga.update', Crypt::encrypt($data->id)) }}" method="post" enctype="multipart/form-data">
-                                        {{csrf_field()}}<input type="file" class="form-control"  name=" foto" id="foto"> <input type="hidden" class="form-control" name=" user" id="user" value=""> <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-file-upload"></i> </button></form>'>
-                                        <img src="{{ asset( $data->foto) }}" width="100px" class="profile-user-img img-fluid img-circle" alt="User profile picture">
+                                <div class="product-img">
+                                    <a href="{{ asset($foto->foto) }}" data-toggle="lightbox" data-title="Foto {{ $data->nama }}" data-gallery="gallery">
+
+                                        <img src="{{ asset($foto->foto) }}" alt="Product Image" class="img-size-50 img-circle" style="height:50px;widht:100px;">
                                     </a>
                                 </div>
                             </td>

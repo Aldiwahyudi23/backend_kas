@@ -9,5 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FotoUser extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+
+    public function data_warga()
+    {
+        return $this->belongsTo(DataWarga::class);
+    }
 }

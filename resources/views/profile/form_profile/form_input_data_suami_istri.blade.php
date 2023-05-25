@@ -37,7 +37,7 @@
 
         <div class="form-group">
             <label>Provinsi:</label><br />
-            <select name="provinsi" id="provinsi" class=" form-control col-12 @error('provinsi') is-invalid @enderror">
+            <select name="provinsi" id="provinsi6" class=" form-control col-12 @error('provinsi') is-invalid @enderror">
                 <option value="">Pilih</option>
             </select>
             @error('provinsi')
@@ -48,7 +48,7 @@
         </div>
         <div class=" form-group">
             <label>Kab/Kota:</label><br />
-            <select name="kota" id="kota" class="form-control col-12 @error('kota') is-invalid @enderror">
+            <select name="kota" id="kota6" class="form-control col-12 @error('kota') is-invalid @enderror">
                 <option value="">Pilih</option>
             </select>
             @error('kota')
@@ -59,7 +59,7 @@
         </div>
         <div class="form-group">
             <label>Kecamatan:</label><br />
-            <select name="kecamatan" id="kecamatan" class="form-control col-12 @error('kecamatan') is-invalid @enderror">
+            <select name="kecamatan" id="kecamatan6" class="form-control col-12 @error('kecamatan') is-invalid @enderror">
                 <option value="">Pilih</option>
             </select>
             @error('kecamatan')
@@ -70,7 +70,7 @@
         </div>
         <div class="form-group">
             <label>Kelurahan:</label><br />
-            <select name="kelurahan" id="kelurahan" class="form-control col-12 @error('kelurahan') is-invalid @enderror">
+            <select name="kelurahan" id="kelurahan6" class="form-control col-12 @error('kelurahan') is-invalid @enderror">
                 <option value="">Pilih</option>
             </select>
             @error('kelurahan')

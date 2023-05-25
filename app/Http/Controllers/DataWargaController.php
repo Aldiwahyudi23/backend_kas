@@ -37,7 +37,6 @@ class DataWargaController extends Controller
         $request->validate(
             [
                 'nama' => 'required',
-                'jenis_kelamin' => 'required',
                 'tanggal_lahir' => 'required',
                 'tempat_lahir' => 'required',
                 'no_hp' => 'required',
@@ -56,7 +55,6 @@ class DataWargaController extends Controller
             ],
             [
                 'nama.required' => 'Nama Harus Di Isin',
-                'jenis_kelamin.required' => 'Jenis Kelamin Harus Di Isin',
                 'tanggal_lahir.required' => 'Tanggal lahir Harus Di Isin',
                 'tempat_lahir.required' => 'Tempat Lahir Harus Di Isin',
                 'no_hp.required' => 'No HP Harus Di Isin',
@@ -90,7 +88,6 @@ class DataWargaController extends Controller
 
         $data_warga = new DataWarga();
         $data_warga->nama = $request->nama;
-        $data_warga->jenis_kelamin = $request->jenis_kelamin;
         $data_warga->tempat_lahir = $request->tempat_lahir;
         $data_warga->tanggal_lahir = $request->tanggal_lahir;
         $data_warga->alamat =  $request->kampung . ", RT/RW " . $request->rt . "/" . $request->rw . ", Des. " . $request->kelurahan . ", Kec. " . $request->kecamatan . ", " . $request->kota . ", " . $request->provinsi;
@@ -98,11 +95,9 @@ class DataWargaController extends Controller
         $data_warga->agama = $request->agama;
         $data_warga->status_pernikahan = $request->status_pernikahan;
         $data_warga->status = $request->status;
-
-
+        $data_warga->jenis_kelamin = $request->jenis_kelamin;
 
         $data_warga->save();
-
 
         $foto_user = new FotoUser();
         $foto_user->data_warga_id = $data_warga->id;
@@ -117,19 +112,12 @@ class DataWargaController extends Controller
         $foto_user->save();
 
         // untuk menyimpan data ke hubungan
-        if ($request->jenis_kelamin == "Laki-Laki") {
-            $data_hubungan = "Ayah";
-        }
-        if ($request->jenis_kelamin == "Perempuan") {
-            $data_hubungan = "Ibu";
-        }
-
         if ($request->pribadi) {
             $data_hubungan_keluarga = new HubunganWarga();
 
             $data_hubungan_keluarga->warga_id = $request->user;
             $data_hubungan_keluarga->data_warga_id = $data_warga->id;
-            $data_hubungan_keluarga->hubungan = $data_hubungan;
+            $data_hubungan_keluarga->hubungan = $request->hubungan;
 
             $data_hubungan_keluarga->save();
         }
@@ -144,10 +132,7 @@ class DataWargaController extends Controller
     {
         $id = Crypt::decrypt($id);
 
-        $data_warga = DataWarga::find($id);
-        $cek_data_hubungan = HubunganWarga::where('warga_id', $id)->where('hubungan', 'Ayah')->first(); //mengambil data dari table hubungan keluarga sesuai dengan warga id yang di ambil dari data
-
-        return view('backend.master_data.data_warga.show', compact('data_warga', 'cek_data_hubungan'));
+        return view('backend.master_data.data_warga.show', compact('')); //tidak aktive
     }
 
     /**
@@ -158,8 +143,9 @@ class DataWargaController extends Controller
         $id = Crypt::decrypt($id);
 
         $data_warga = DataWarga::find($id);
+        $foto = FotoUser::where('data_warga_id', $data_warga->id)->where('is_active', 1)->first();
 
-        return view('backend.master_data.data_warga.edit', compact('data_warga'));
+        return view('backend.master_data.data_warga.edit', compact('data_warga', 'foto'));
     }
 
     /**
@@ -197,11 +183,22 @@ class DataWargaController extends Controller
             $data_warga->alamat =  $request->kampung . ", RT/RW " . $request->rt . "/" . $request->rw . ", Des. " . $request->kelurahan . ", Kec. " . $request->kecamatan . ", " . $request->kota . ", " . $request->provinsi;
         }
 
-        if ($request->foto) {
-            $data_warga->foto = "/img/warga/$nama";
-        }
-
         $data_warga->update();
+
+        if ($request->foto) {
+            $cek_foto = FotoUser::where('is_active', 1)->where('data_warga_id', $id)->first();
+            $foto_no_active = FotoUser::find($cek_foto->id);
+            $foto_no_active->is_active = 2;
+            $foto_no_active->update();
+
+            $foto_user = new FotoUser();
+            $foto_user->data_warga_id = $data_warga->id;
+            $foto_user->is_active = 1;
+            if ($request->foto) {
+                $foto_user->foto = "/img/warga/$nama";
+            }
+            $foto_user->save();
+        }
 
         return redirect()->back()->with('infoes', 'Wihhhh mantapppp bener, Data atos ka gentos');
     }
@@ -211,6 +208,40 @@ class DataWargaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $id = Crypt::decrypt($id);
+        $data_warga = DataWarga::find($id);
+
+        $foto = HubunganWarga::where('data_warga_id', $data_warga->id)->get();
+        foreach ($foto as $data) {
+            $hapus_foto = HubunganWarga::find($data->id);
+            $hapus_foto->delete();
+        }
+
+        $data_warga->delete();
+
+        return redirect()->back()->with('kuning', 'Data Parantos di hapus tina disimpen dina sampah )');
+    }
+    public function trash()
+    {
+        $data_warga = DataWarga::onlyTrashed()->get();
+
+        return view('backend.master_data.data_warga.trash', compact('data_warga'));
+    }
+
+    public function restore($id)
+    {
+        $id = Crypt::decrypt($id);
+        $data_warga = DataWarga::withTrashed()->findorfail($id);
+        $data_warga->restore();
+        return redirect()->back()->with('infoes', 'Data data warga atos di kembalikeun deui tina sampah');
+    }
+
+    public function kill($id)
+    {
+        $id = Crypt::decrypt($id);
+        $data_warga = DataWarga::withTrashed()->findorfail($id);
+
+        $data_warga->forceDelete();
+        return redirect()->back()->with('kuning', 'Data data warga parantos di hapus dina sampah');
     }
 }

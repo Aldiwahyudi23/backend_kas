@@ -1,6 +1,8 @@
  <?php
 
     use App\Models\AccessProgram;
+    use App\Models\DataWarga;
+    use App\Models\FotoUser;
     use App\Models\LayoutAppUser;
     use App\Models\MenuFooter;
     use App\Models\ProfileApp;
@@ -10,6 +12,9 @@
     $profile_app = ProfileApp::first();
     $warna_menu = LayoutAppUser::where('user_id', Auth::user()->id)->first();
     $data_menu_footer = MenuFooter::where('is_active', 1)->get();
+
+    $user = DataWarga::find(Auth::user()->data_warga_id);
+    $foto = FotoUser::where('data_warga_id', $user->id)->where('is_active', 1)->first();
     ?>
 
  <aside class="control-sidebar control-sidebar-dark">
@@ -27,7 +32,7 @@
          <li class="nav-item">
              <a href="{{Route($data->route_url->route_name)}}" id="{{$data->nama}}" class="nav-link text-center">
                  @if($data->foto == true)
-                 <img src="" width="45px" height="45px" alt="Saya" class="brand-image img-circle elevation-3">
+                 <img src="{{asset($foto->foto)}}" width="45px" height="45px" alt="Saya" class="brand-image img-circle elevation-3">
                  @else
                  <i class="nav-icon {{$data->icon}} nav-icon"></i> <span class="small d-block">{{$data->nama}}</span>
                  @endif
@@ -39,7 +44,7 @@
          <li class="nav-item">
              <a href="{{Route($data->route_url->route_name)}}" id="{{$data->nama}}" class="nav-link text-center">
                  @if($data->foto == true)
-                 <img src="" width="45px" height="45px" alt="Saya" class="brand-image img-circle elevation-3">
+                 <img src="{{asset($foto->foto)}}" width="45px" height="45px" alt="Saya" class="brand-image img-circle elevation-3">
                  @else
                  <i class="nav-icon {{$data->icon}} nav-icon"></i> <span class="small d-block">{{$data->nama}}</span>
                  @endif
@@ -343,6 +348,270 @@
                      tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
                  });
                  document.getElementById("kelurahan2").innerHTML = tampung;
+             });
+     });
+ </script>
+
+ <script>
+     fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json`)
+         .then((response) => response.json())
+         .then((provinces) => {
+             var data = provinces;
+             var tampung = `<option>Pilih</option>`;
+             data.forEach((element) => {
+                 tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+             });
+             document.getElementById("provinsi4").innerHTML = tampung;
+         });
+ </script>
+ <script>
+     const selectProvinsi4 = document.getElementById('provinsi4');
+     const selectKota4 = document.getElementById('kota4');
+     const selectKecamatan4 = document.getElementById('kecamatan4');
+     const selectKelurahan4 = document.getElementById('kelurahan4');
+
+     selectProvinsi4.addEventListener('change', (e) => {
+         var provinsi = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${provinsi}.json`)
+             .then((response) => response.json())
+             .then((regencies) => {
+                 var data = regencies;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kota4').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kecamatan4').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kelurahan4').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kota4").innerHTML = tampung;
+             });
+     });
+
+     selectKota4.addEventListener('change', (e) => {
+         var kota = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/districts/${kota}.json`)
+             .then((response) => response.json())
+             .then((districts) => {
+                 var data = districts;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kecamatan4').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kelurahan4').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kecamatan4").innerHTML = tampung;
+             });
+     });
+     selectKecamatan4.addEventListener('change', (e) => {
+         var kecamatan = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/villages/${kecamatan}.json`)
+             .then((response) => response.json())
+             .then((villages) => {
+                 var data = villages;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kelurahan4').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kelurahan4").innerHTML = tampung;
+             });
+     });
+ </script>
+
+ <script>
+     fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json`)
+         .then((response) => response.json())
+         .then((provinces) => {
+             var data = provinces;
+             var tampung = `<option>Pilih</option>`;
+             data.forEach((element) => {
+                 tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+             });
+             document.getElementById("provinsi5").innerHTML = tampung;
+         });
+ </script>
+ <script>
+     const selectProvinsi5 = document.getElementById('provinsi5');
+     const selectKota5 = document.getElementById('kota5');
+     const selectKecamatan5 = document.getElementById('kecamatan5');
+     const selectKelurahan5 = document.getElementById('kelurahan5');
+
+     selectProvinsi5.addEventListener('change', (e) => {
+         var provinsi = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${provinsi}.json`)
+             .then((response) => response.json())
+             .then((regencies) => {
+                 var data = regencies;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kota5').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kecamatan5').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kelurahan5').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kota5").innerHTML = tampung;
+             });
+     });
+
+     selectKota5.addEventListener('change', (e) => {
+         var kota = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/districts/${kota}.json`)
+             .then((response) => response.json())
+             .then((districts) => {
+                 var data = districts;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kecamatan5').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kelurahan5').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kecamatan5").innerHTML = tampung;
+             });
+     });
+     selectKecamatan5.addEventListener('change', (e) => {
+         var kecamatan = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/villages/${kecamatan}.json`)
+             .then((response) => response.json())
+             .then((villages) => {
+                 var data = villages;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kelurahan5').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kelurahan5").innerHTML = tampung;
+             });
+     });
+ </script>
+
+ <script>
+     fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json`)
+         .then((response) => response.json())
+         .then((provinces) => {
+             var data = provinces;
+             var tampung = `<option>Pilih</option>`;
+             data.forEach((element) => {
+                 tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+             });
+             document.getElementById("provinsi6").innerHTML = tampung;
+         });
+ </script>
+ <script>
+     const selectProvinsi6 = document.getElementById('provinsi6');
+     const selectKota6 = document.getElementById('kota6');
+     const selectKecamatan6 = document.getElementById('kecamatan6');
+     const selectKelurahan6 = document.getElementById('kelurahan6');
+
+     selectProvinsi6.addEventListener('change', (e) => {
+         var provinsi = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${provinsi}.json`)
+             .then((response) => response.json())
+             .then((regencies) => {
+                 var data = regencies;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kota6').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kecamatan6').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kelurahan6').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kota6").innerHTML = tampung;
+             });
+     });
+
+     selectKota6.addEventListener('change', (e) => {
+         var kota = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/districts/${kota}.json`)
+             .then((response) => response.json())
+             .then((districts) => {
+                 var data = districts;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kecamatan6').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kelurahan6').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kecamatan6").innerHTML = tampung;
+             });
+     });
+     selectKecamatan6.addEventListener('change', (e) => {
+         var kecamatan = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/villages/${kecamatan}.json`)
+             .then((response) => response.json())
+             .then((villages) => {
+                 var data = villages;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kelurahan6').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kelurahan6").innerHTML = tampung;
+             });
+     });
+ </script>
+
+ <script>
+     fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json`)
+         .then((response) => response.json())
+         .then((provinces) => {
+             var data = provinces;
+             var tampung = `<option>Pilih</option>`;
+             data.forEach((element) => {
+                 tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+             });
+             document.getElementById("provinsi7").innerHTML = tampung;
+         });
+ </script>
+ <script>
+     const selectProvinsi7 = document.getElementById('provinsi7');
+     const selectKota7 = document.getElementById('kota7');
+     const selectKecamatan7 = document.getElementById('kecamatan7');
+     const selectKelurahan7 = document.getElementById('kelurahan7');
+
+     selectProvinsi7.addEventListener('change', (e) => {
+         var provinsi = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${provinsi}.json`)
+             .then((response) => response.json())
+             .then((regencies) => {
+                 var data = regencies;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kota7').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kecamatan7').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kelurahan7').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kota7").innerHTML = tampung;
+             });
+     });
+
+     selectKota7.addEventListener('change', (e) => {
+         var kota = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/districts/${kota}.json`)
+             .then((response) => response.json())
+             .then((districts) => {
+                 var data = districts;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kecamatan7').innerHTML = '<option>Pilih</option>';
+                 document.getElementById('kelurahan7').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kecamatan7").innerHTML = tampung;
+             });
+     });
+     selectKecamatan7.addEventListener('change', (e) => {
+         var kecamatan = e.target.options[e.target.selectedIndex].dataset.prov;
+         fetch(`https://kanglerian.github.io/api-wilayah-indonesia/api/villages/${kecamatan}.json`)
+             .then((response) => response.json())
+             .then((villages) => {
+                 var data = villages;
+                 var tampung = `<option>Pilih</option>`;
+                 document.getElementById('kelurahan7').innerHTML = '<option>Pilih</option>';
+                 data.forEach((element) => {
+                     tampung += `<option data-prov="${element.id}" value="${element.name}">${element.name}</option>`;
+                 });
+                 document.getElementById("kelurahan7").innerHTML = tampung;
              });
      });
  </script>
