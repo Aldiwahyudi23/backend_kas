@@ -2,6 +2,8 @@
 
                     use App\Models\AccessMenu;
                     use App\Models\AccessSubMenu;
+                    use App\Models\DataWarga;
+                    use App\Models\FotoUser;
                     use App\Models\LayoutAppUser;
                     use App\Models\ProfileApp;
                     use Illuminate\Support\Facades\Auth;
@@ -10,20 +12,22 @@
                     $warna_sid = LayoutAppUser::where('user_id', Auth::user()->id)->first();
                     $access_menu = AccessMenu::where('role_id', Auth::user()->id)->get();
 
+
+                    $user = DataWarga::find(Auth::user()->data_warga_id);
+                    $foto = FotoUser::where('data_warga_id', $user->id)->where('is_active', 1)->first();
                     ?>
                     <!-- Main Sidebar Container -->
                     <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: {{$warna_sid->sider}};">
                         <!-- Sidebar -->
                         <div class=" sidebar">
                             <!-- Sidebar user panel (optional) -->
-                            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                                <div class="image">
-                                    <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                                </div>
-                                <div class="info">
+                            <div class="image justify-content-center">
+                                <center>
+                                    <img src="{{asset($foto->foto)}}" class="img-circle " width="50%" alt="User Image">
+
                                     <p> {{ Auth::User()->name}} </p>
                                     <p> {{ Auth::User()->email }} </p>
-                                </div>
+                                </center>
                             </div>
                             <!-- SidebarSearch Form -->
                             <div class="form-inline">
@@ -69,11 +73,12 @@
                                     @endif
                                     @endforeach
                                     <li class="nav-item has-treeview">
-                                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="nav-icon fas fa-sign-out-alt"></i> &nbsp; Kaluar</a>
+                                        <a class="dropdown-item active" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="nav-icon fas fa-sign-out-alt"></i> &nbsp; Kaluar</a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             @csrf
                                         </form>
                                     </li>
+                                    <br>
                                 </ul>
                             </nav>
                             <!-- /.sidebar-menu -->
