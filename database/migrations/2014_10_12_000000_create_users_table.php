@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->foreignId('role_id')->references('id')->on('roles');
             $table->foreignId('data_warga_id')->references('id')->on('data_wargas');
+            $table->enum('is_active', ['1', '0']);
             $table->rememberToken();
             $table->timestamps();
         });

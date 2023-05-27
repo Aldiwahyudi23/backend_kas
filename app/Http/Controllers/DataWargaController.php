@@ -6,8 +6,11 @@ use App\Models\DataWarga;
 use App\Http\Controllers\Controller;
 use App\Models\FotoUser;
 use App\Models\HubunganWarga;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 
 class DataWargaController extends Controller
 {
@@ -131,8 +134,13 @@ class DataWargaController extends Controller
     public function show($id)
     {
         $id = Crypt::decrypt($id);
+        $data_warga = DataWarga::find($id);
+        $data_akun = User::where('data_warga_id', $id)->first();
+        $foto = FotoUser::where('data_warga_id', $id)->first();
 
-        return view('backend.master_data.data_warga.show', compact('')); //tidak aktive
+        $cek_data_hubungan = HubunganWarga::where('warga_id', $id)->get();
+
+        return view('backend.master_data.data_warga.show', compact('data_warga', 'data_akun', 'foto', 'cek_data_hubungan')); //tidak aktive
     }
 
     /**
@@ -201,6 +209,60 @@ class DataWargaController extends Controller
         }
 
         return redirect()->back()->with('infoes', 'Wihhhh mantapppp bener, Data atos ka gentos');
+    }
+
+
+
+
+    // Untuk mengaktifkan akun atau tidak aktif
+
+    public function is_active($id)
+    {
+        $id = Crypt::decrypt($id);
+
+        $data_user = User::find($id);
+        if ($data_user->is_active == 1) {
+            $data_user->is_active = 2;
+        } else {
+            $data_user->is_active = 1;
+        }
+        $data_user->update();
+
+        return redirect()->back()->with('sukses', 'Akun Sudah di robah');
+    }
+
+
+    public function store_user(Request $request)
+    {
+        $request->validate(
+            [
+                'name' => 'required',
+                'email' => 'required',
+                'role_id' => 'required',
+                'data_warga_id' => 'required',
+            ],
+            [
+                'nama.required' => 'Nama Kedah di isin',
+                'email.required' => 'email Kedah di isin',
+                'role_id.required' => 'Role Kedah di isin',
+                'data_warga_id.required' => 'Data Warga Kedah di isin',
+            ]
+        );
+
+        $data_user = new User();
+        $data_user->name = $request->name;
+        $data_user->email = $request->email;
+        $data_user->password = Hash::make('12345678');
+        $data_user->role_id = $request->role_id;
+        $data_user->data_warga_id = $request->data_warga_id;
+
+        $data_email = DataWarga::find($request->data_warga_id);
+        $data_email->email = $request->email;
+        $data_email->update();
+
+        $data_user->save();
+
+        return redirect()->back()->with('sukse', 'Wihhhh mantap bos account atos jadi, gaskeunnn');
     }
 
     /**

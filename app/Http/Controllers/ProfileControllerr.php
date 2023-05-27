@@ -2,106 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\DataWarga;
 use App\Models\FotoUser;
 use App\Models\HubunganWarga;
 use App\Models\User;
+use Dflydev\DotAccessData\Data;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $data_warga = DataWarga::find(Auth::user()->data_warga_id);
-        $data_akun = User::where('data_warga_id', Auth::user()->data_warga_id)->first();
-        $foto = FotoUser::where('data_warga_id', Auth::user()->data_warga_id);
-
-        $cek_data_hubungan = HubunganWarga::where('warga_id', Auth::user()->data_warga_id)->get();
-
-        return view('frontend.profile.index', compact('data_warga', 'data_akun', 'foto', 'cek_data_hubungan')); //tidak aktive
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
-    {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
-    }
-
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
-    }
-
     public function edit_data()
     {
         $user = User::find(Auth::user()->data_warga_id);
@@ -198,57 +113,50 @@ class ProfileController extends Controller
         ));
     }
 
-    public function edit_email()
+    /**
+     * Display the user's profile form.
+     */
+    public function edit(Request $request): View
     {
-        return view('frontend.profile.email');
-    }
-
-    public function ubah_email(Request $request)
-    {
-        $this->validate($request, [
-            'email' => 'required|string|email'
+        return view('profile.edit', [
+            'user' => $request->user(),
         ]);
-        $user = User::findorfail(Auth::user()->id);
-        $cekUser = User::where('email', $request->email)->count();
-        if ($cekUser >= 1) {
-            return redirect()->back()->with('error', 'Maaf email ini sudah terdaftar!');
-        } else {
-            $user_email = [
-                'email' => $request->email,
-            ];
-            $user->update($user_email);
+    }
 
-            return redirect()->back()->with('success', 'Email anda berhasil diperbarui!');
+    /**
+     * Update the user's profile information.
+     */
+    public function update(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $request->user()->fill($request->validated());
+
+        if ($request->user()->isDirty('email')) {
+            $request->user()->email_verified_at = null;
         }
+
+        $request->user()->save();
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    public function edit_password()
+    /**
+     * Delete the user's account.
+     */
+    public function destroy(Request $request): RedirectResponse
     {
-        return view('frontend.profile.password');
-    }
-
-    public function ubah_password(Request $request)
-    {
-        $this->validate($request, [
-            'password' => 'required|string|min:8|confirmed'
+        $request->validateWithBag('userDeletion', [
+            'password' => ['required', 'current_password'],
         ]);
-        $user = User::findorfail(Auth::user()->id);
-        if ($request->password_lama) {
-            if (Hash::check($request->password_lama, $user->password)) {
-                if ($request->password_lama == $request->password) {
-                    return redirect()->back()->with('error', 'Maaf password yang anda masukkan sama!');
-                } else {
-                    $user_password = [
-                        'password' => Hash::make($request->password),
-                    ];
-                    $user->update($user_password);
-                    return redirect()->back()->with('success', 'Password anda berhasil diperbarui!');
-                }
-            } else {
-                return redirect()->back()->with('error', 'Tolong masukkan password lama anda dengan benar!');
-            }
-        } else {
-            return redirect()->back()->with('error', 'Tolong masukkan password lama anda terlebih dahulu!');
-        }
+
+        $user = $request->user();
+
+        Auth::logout();
+
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return Redirect::to('/');
     }
 }

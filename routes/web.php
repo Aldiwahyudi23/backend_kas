@@ -15,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubMenuController;
+use App\Http\Controllers\UserController;
 use App\Models\AccessProgram;
 use App\Models\DataWarga;
 use App\Models\LayoutAppUser;
@@ -81,9 +82,20 @@ Route::get('profile-app/layout/login', [ProfileAppController::class, 'login'])->
 Route::resource('/layout-app-user', LayoutAppUserController::class);
 
 Route::resource('data-warga', DataWargaController::class);
+Route::post('/data/warga/cek-akun/{id}', [DataWargaController::class, 'is_active'])->middleware(['auth', 'verified'])->name('data-wargas.is_active');
+Route::POST('/data/warga/cek-akun/', [DataWargaController::class, 'store_user'])->middleware(['auth', 'verified'])->name('data-warga.store_user');
 Route::get('/data/warga/trash/', [DataWargaController::class, 'trash'])->middleware(['auth', 'verified'])->name('data-warga.trash');
 Route::post('/data/warga/kill/{id}', [DataWargaController::class, 'kill'])->middleware(['auth', 'verified'])->name('data-warga.kill');
 Route::get('/data/warga/restore/{id}', [DataWargaController::class, 'restore'])->middleware(['auth', 'verified'])->name('data-warga.restore');
+
+Route::resource('profile-user', ProfileController::class);
+Route::get('/pengaturan/email', [ProfileController::class, 'edit_email'])->middleware(['auth'])->name('pengaturan.email');
+Route::post('/pengaturan/ubah-email', [ProfileController::class, 'ubah_email'])->middleware(['auth'])->name('pengaturan.ubah-email');
+Route::get('/pengaturan/password', [ProfileController::class, 'edit_password'])->middleware(['auth', 'verified'])->name('pengaturan.password');
+Route::post('/pengaturan/ubah-password', [ProfileController::class, 'ubah_password'])->middleware(['auth', 'verified'])->name('pengaturan.ubah-password');
+
 Route::resource('data-hubungan-warga', HubunganWargaController::class);
+
+Route::resource('data-user', UserController::class);
 
 require __DIR__ . '/auth.php';

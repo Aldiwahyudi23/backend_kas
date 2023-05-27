@@ -9,7 +9,7 @@ class HubunganWarga extends Model
 {
     use HasFactory;
 
-    public function hubungan_warga()
+    public function data_warga()
     {
         return $this->belongsTo(DataWarga::class);
     }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('agama', ['Islam', 'Kristen', 'Hindu', 'Buddha', 'Khonghucu']);
             $table->enum('status_pernikahan', ['Belum Menikah', 'Menikah', 'Cerai Hidup', 'Cerai Mati']);
             $table->string('status');
+            $table->string('email')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

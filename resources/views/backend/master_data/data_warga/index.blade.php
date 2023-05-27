@@ -238,7 +238,9 @@
                             <th>No.</th>
                             <th>Foto</th>
                             <th>Nama Warga</th>
+                            <th>Email</th>
                             <th>Jenis Kelamin</th>
+                            <th>Account</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -247,24 +249,66 @@
                         <?php
 
                         use App\Models\FotoUser;
+                        use App\Models\User;
 
                         $no = 0; ?>
                         @foreach($data_warga as $data)
                         <?php $no++;
                         $foto = FotoUser::where('data_warga_id', $data->id)->where('is_active', 1)->first();
+                        $cek_akun = User::where('data_Warga_id', $data->id);
+                        if ($cek_akun->count() == 1) {
+                            $akun = "ON";
+                        } else {
+                            $akun = "OFF";
+                        }
                         ?>
                         <tr>
                             <td>{{$no}}</td>
                             <td>
                                 <div class="product-img">
                                     <a href="{{ asset($foto->foto) }}" data-toggle="lightbox" data-title="Foto {{ $data->nama }}" data-gallery="gallery">
-
                                         <img src="{{ asset($foto->foto) }}" alt="Product Image" class="img-size-50 img-circle" style="height:50px;widht:100px;">
                                     </a>
                                 </div>
                             </td>
                             <td> <a href="{{route('data-warga.show',Crypt::encrypt($data->id))}}">{{$data->nama}}</a> </td>
+                            <td> {{$data->email}} </td>
                             <td> {{$data->jenis_kelamin}}</td>
+
+                            @if($akun == "OFF" )
+                            <td>
+                                <!-- fomr ini untuk jika akun belum terhubung ke akun user atau belum bisa login -->
+                                <form action="{{Route('data-warga.store_user')}}" method="POST" enctype="multipart/form-data">
+                                    {{csrf_field()}}
+                                    @if($data->email == false)
+                                    <input type="text" name="email" id="email" value="{{$data->email}}">
+                                    @else
+                                    <input type="hiiden" name="email" id="email" value="{{$data->email}}"> <br>
+                                    @endif
+                                    <input type="hidden" name="role_id" id="role_id" value="2">
+                                    <input type="hidden" name="name" id="name" value="{{$data->nama}}">
+                                    <input type="hidden" name="data_warga_id" id="data_warga_id" value="{{$data->id}}">
+
+                                    <button type="submit" class="btn btn-danger"> DAFTAR </button> <br>
+                                    <label for="" class="text-danger">Belum punya akun login</label>
+                            </td>
+                            <!-- ----------------------- -->
+                            @else
+                            <!-- fORM DI BAWAH UNTUK JIKA AKUN SUDAH TERHBUNG KE AKUN USER -->
+                            <td>
+                                <form action="{{ route('data-wargas.is_active',Crypt::encrypt($cek_akun->first()->id)) }}" method="post" enctype="multipart/form-data">
+                                    {{csrf_field()}}
+                                    @if($cek_akun->first()->is_active < 1 ) <button type="submit" class="btn btn-danger"> Tidak Aktif</button><br>
+                                        <label for="" class="text-danger"> Akun di Non Aktif kan, tidak bisa mengakses semua halaman</label>
+                                        @else
+                                        <button type="submit" class="btn btn-success"> Aktif</button> <br>
+                                        <label for="" class="text-success"> Akun Sudah Aktif, dapat di gunakan</label>
+                                        @endif
+                                </form>
+                            </td>
+                            @endif
+                            </form>
+                            <!-----------------  -->
                             <td>
                                 <form action="{{route('data-warga.destroy',Crypt::encrypt($data->id))}}" method="POST">
                                     @csrf
