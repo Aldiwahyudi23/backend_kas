@@ -15,7 +15,15 @@
                 <!-- <p class="text-muted text-center">{{ Auth::user()->role }}</p> -->
                 <ul class="list-group list-group-unbordered mb-3">
                     <li class="list-group-item">
-                        <b>No INduk</b> <a class="float-right">{{ $data_pribadi->id }}</a>
+                        <b>Email</b>
+                        @if($data_pribadi->email == false)
+                        <p class="float-right">Belum ada email yang terkait <br> Tidak bisa masuk ke aplikasi</p>
+                        @else
+                        <a class="float-right">{{ $data_pribadi->email }}</a>
+                        @endif
+                    </li>
+                    <li class="list-group-item">
+                        <b>No HP</b> <a class="float-right">{{ $data_pribadi->no_hp }}</a>
                     </li>
                 </ul>
                 <table id="example1" class="table table-bordered table-striped">
@@ -246,6 +254,11 @@
                                     <strong>{{ $message }}</strong>
                                 </div>
                                 @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email" value="{{$data_pribadi->email}}" class="form-control col-12" placeholder="Jika Ingin Mengaktifkan Akun/ bisa Login ke aplikasi , Harap Masukan Email">
                             </div>
                             <hr>
                             <button onclick="tombol()" id="myBtn" type="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Ganti</button>

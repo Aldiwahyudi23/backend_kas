@@ -33,69 +33,67 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->middleware(['auth'])->name('home');
-Route::get('/setting/app', [HomeController::class, 'setting'])->middleware(['auth'])->name('set');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::get('/setting/app', [HomeController::class, 'setting'])->middleware(['auth', 'verified'])->name('set');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile/edit/data', [ProfileController::class, 'edit_data'])->name('profile.edit.data');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/edit/data', [ProfileController::class, 'edit_data'])->middleware(['auth', 'verified'])->name('profile.edit.data');
+    Route::get('/profile', [ProfileController::class, 'edit'])->middleware(['auth', 'verified'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->middleware(['auth', 'verified'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->middleware(['auth', 'verified'])->name('profile.destroy');
 });
 
-Route::resource('menu', MenuController::class);
+Route::resource('menu', MenuController::class)->middleware(['auth', 'verified']);
 Route::get('/menus/trash/', [MenuController::class, 'trash'])->middleware(['auth', 'verified'])->name('menu.trash');
 Route::post('/menus/kill/{id}', [MenuController::class, 'kill'])->middleware(['auth', 'verified'])->name('menu.kill');
 Route::get('/menus/restore/{id}', [MenuController::class, 'restore'])->middleware(['auth', 'verified'])->name('menu.restore');
 
-Route::resource('sub-menu', SubMenuController::class);
+Route::resource('sub-menu', SubMenuController::class)->middleware(['auth', 'verified']);
 Route::get('/sub-menus/trash/', [SubMenuController::class, 'trash'])->middleware(['auth', 'verified'])->name('sub-menu.trash');
 Route::post('/sub-menus/kill/{id}', [SubMenuController::class, 'kill'])->middleware(['auth', 'verified'])->name('sub-menu.kill');
 Route::get('/sub-menus/restore/{id}', [SubMenuController::class, 'restore'])->middleware(['auth', 'verified'])->name('sub-menu.restore');
 
-Route::resource('program', ProgramController::class);
+Route::resource('program', ProgramController::class)->middleware(['auth', 'verified']);
+Route::get('/programs/user/pilih', [ProgramController::class, 'program_pilih'])->middleware(['auth', 'verified'])->name('program.pilih');
 Route::get('/programs/trash/', [ProgramController::class, 'trash'])->middleware(['auth', 'verified'])->name('program.trash');
 Route::post('/programs/kill/{id}', [ProgramController::class, 'kill'])->middleware(['auth', 'verified'])->name('program.kill');
 Route::get('/programs/restore/{id}', [ProgramController::class, 'restore'])->middleware(['auth', 'verified'])->name('program.restore');
 
-Route::resource('role', RoleController::class);
+Route::resource('role', RoleController::class)->middleware(['auth', 'verified']);
 Route::get('/roles/trash/', [RoleController::class, 'trash'])->middleware(['auth', 'verified'])->name('role.trash');
 Route::post('/roles/kill/{id}', [RoleController::class, 'kill'])->middleware(['auth', 'verified'])->name('role.kill');
 Route::get('/roles/restore/{id}', [RoleController::class, 'restore'])->middleware(['auth', 'verified'])->name('role.restore');
 
-Route::resource('route-url', AllRouteUrlController::class);
+Route::resource('route-url', AllRouteUrlController::class)->middleware(['auth', 'verified']);
 Route::get('/route-urls/trash/', [AllRouteUrlController::class, 'trash'])->middleware(['auth', 'verified'])->name('route-url.trash');
 Route::post('/route-urls/kill/{id}', [AllRouteUrlController::class, 'kill'])->middleware(['auth', 'verified'])->name('route-url.kill');
 Route::get('/route-urls/restore/{id}', [AllRouteUrlController::class, 'restore'])->middleware(['auth', 'verified'])->name('route-url.restore');
 
-Route::resource('access-menu', AccessMenuController::class);
-Route::resource('access-program', AccessProgramController::class);
-Route::resource('access-sub-menu', AccessSubMenuController::class);
-Route::resource('menu-footer', MenuFooterController::class);
+Route::resource('access-menu', AccessMenuController::class)->middleware(['auth', 'verified']);
+Route::resource('access-program', AccessProgramController::class)->middleware(['auth', 'verified']);
+Route::resource('access-sub-menu', AccessSubMenuController::class)->middleware(['auth', 'verified']);
+Route::resource('menu-footer', MenuFooterController::class)->middleware(['auth', 'verified']);
 
-Route::resource('profile-app', ProfileAppController::class);
+Route::resource('profile-app', ProfileAppController::class)->middleware(['auth', 'verified']);
 Route::get('profile-app/layout/login', [ProfileAppController::class, 'login'])->middleware(['auth', 'verified'])->name('profile-app-login');
 
-Route::resource('/layout-app-user', LayoutAppUserController::class);
+Route::resource('/layout-app-user', LayoutAppUserController::class)->middleware(['auth', 'verified']);
 
-Route::resource('data-warga', DataWargaController::class);
+Route::resource('data-warga', DataWargaController::class)->middleware(['auth', 'verified']);
 Route::post('/data/warga/cek-akun/{id}', [DataWargaController::class, 'is_active'])->middleware(['auth', 'verified'])->name('data-wargas.is_active');
 Route::POST('/data/warga/cek-akun/', [DataWargaController::class, 'store_user'])->middleware(['auth', 'verified'])->name('data-warga.store_user');
 Route::get('/data/warga/trash/', [DataWargaController::class, 'trash'])->middleware(['auth', 'verified'])->name('data-warga.trash');
 Route::post('/data/warga/kill/{id}', [DataWargaController::class, 'kill'])->middleware(['auth', 'verified'])->name('data-warga.kill');
 Route::get('/data/warga/restore/{id}', [DataWargaController::class, 'restore'])->middleware(['auth', 'verified'])->name('data-warga.restore');
 
-Route::resource('profile-user', ProfileController::class);
+Route::resource('profile-user', ProfileController::class)->middleware(['auth', 'verified']);
 Route::get('/pengaturan/email', [ProfileController::class, 'edit_email'])->middleware(['auth'])->name('pengaturan.email');
 Route::post('/pengaturan/ubah-email', [ProfileController::class, 'ubah_email'])->middleware(['auth'])->name('pengaturan.ubah-email');
 Route::get('/pengaturan/password', [ProfileController::class, 'edit_password'])->middleware(['auth', 'verified'])->name('pengaturan.password');
 Route::post('/pengaturan/ubah-password', [ProfileController::class, 'ubah_password'])->middleware(['auth', 'verified'])->name('pengaturan.ubah-password');
 
-Route::resource('data-hubungan-warga', HubunganWargaController::class);
+Route::resource('data-hubungan-warga', HubunganWargaController::class)->middleware(['auth', 'verified']);
 
-Route::resource('data-user', UserController::class);
+Route::resource('data-user', UserController::class)->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

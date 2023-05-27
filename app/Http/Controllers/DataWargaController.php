@@ -6,6 +6,7 @@ use App\Models\DataWarga;
 use App\Http\Controllers\Controller;
 use App\Models\FotoUser;
 use App\Models\HubunganWarga;
+use App\Models\LayoutAppUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -190,6 +191,9 @@ class DataWargaController extends Controller
         if ($request->kelurahan) {
             $data_warga->alamat =  $request->kampung . ", RT/RW " . $request->rt . "/" . $request->rw . ", Des. " . $request->kelurahan . ", Kec. " . $request->kecamatan . ", " . $request->kota . ", " . $request->provinsi;
         }
+        if ($request->email) {
+            $data_warga->email = $request->email;
+        }
 
         $data_warga->update();
 
@@ -256,11 +260,20 @@ class DataWargaController extends Controller
         $data_user->role_id = $request->role_id;
         $data_user->data_warga_id = $request->data_warga_id;
 
+
         $data_email = DataWarga::find($request->data_warga_id);
         $data_email->email = $request->email;
         $data_email->update();
 
         $data_user->save();
+
+        // Menambahkan user sekalian dengan menambhakan layout untuk tampilan
+        $layout_user = new LayoutAppUser();
+        $layout_user->user_id = $data_user->id;
+        $layout_user->navbar = '#b7eb2a';
+        $layout_user->menu = '#b7eb2a';
+        $layout_user->sider = '#b7eb2a';
+        $layout_user->save();
 
         return redirect()->back()->with('sukse', 'Wihhhh mantap bos account atos jadi, gaskeunnn');
     }

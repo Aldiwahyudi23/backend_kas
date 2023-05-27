@@ -10,7 +10,7 @@
 
                     $profile_app = ProfileApp::first();
                     $warna_sid = LayoutAppUser::where('user_id', Auth::user()->id)->first();
-                    $access_menu = AccessMenu::where('role_id', Auth::user()->id)->get();
+                    $access_menu = AccessMenu::where('role_id', Auth::user()->role_id)->get();
 
 
                     $user = DataWarga::find(Auth::user()->data_warga_id);

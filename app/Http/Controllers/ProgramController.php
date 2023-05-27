@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Program;
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
+use App\Models\Role;
 use App\Models\SubMenu;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -108,6 +110,13 @@ class ProgramController extends Controller
 
         $data->update();
         return redirect()->back()->with('infoes', 'Data Program Parantos ka geuntos');
+    }
+
+    public function program_pilih()
+    {
+        $data_program = Program::all();
+
+        return view('frontend.setting.program.program_pilih', compact('data_program'));
     }
 
     /**
