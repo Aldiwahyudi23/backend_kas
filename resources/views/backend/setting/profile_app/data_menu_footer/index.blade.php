@@ -124,6 +124,8 @@
                                     <input type="hidden" name="kategori" id="kategori" value="{{$data->kategori}}">
                                     <input type="hidden" name="route_url_id" id="route_url_id" value="{{$data->route_url_id}}">
                                     <input type="hidden" name="deskripsi" id="deskripsi" value="{{$data->deskripsi}}">
+                                    <input type="hidden" name="icon" id="icon" value="{{$data->icon}}">
+                                    <input type="hidden" name="foto" id="foto" value="{{$data->foto}}">
                                     @if($data->is_active == 1 )
                                     <input type="hidden" name="is_active" id="is_active" value="0">
                                     <button type="submit" class="btn btn-success"> ON</button>

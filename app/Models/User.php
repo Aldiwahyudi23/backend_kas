@@ -51,4 +51,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function data_warga()
+    {
+        return $this->belongsTo(DataWarga::class);
+    }
 }

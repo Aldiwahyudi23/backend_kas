@@ -17,16 +17,15 @@ return new class extends Migration
             $table->integer('jumlah');
             $table->text('keterangan');
             $table->string('pembayaran')->nullable();
-            $table->string('kategori');
+            $table->foreignId('kategori_id')->references('id')->on('kategori_anggaran_programs');
             $table->text('sekertaris')->nullable();
             $table->text('bendahara')->nullable();
             $table->text('ketua')->nullable();
             $table->text('status')->nullable();
             $table->string('foto')->nullable();
-            $table->string('lama')->nullable();
             $table->string('pengeluaran_id')->nullable();
             $table->foreignId('data_warga_id')->references('id')->on('data_wargas')->nullable();
-            $table->foreignId('user_id')->references('id')->on('users')->nullable();
+            $table->foreignId('pengaju_id')->references('id')->on('data_wargas')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

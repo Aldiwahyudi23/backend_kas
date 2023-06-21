@@ -110,7 +110,7 @@ class ProfileController extends Controller
         $data_pribadi = DataWarga::find(Auth::user()->data_warga_id);
         $foto_pribadi = FotoUser::where('data_warga_id', Auth::user()->data_warga_id)->where('is_active', 1)->first();
 
-        $cek_data_ayah = HubunganWarga::where('warga_id', Auth::user()->id)->where('hubungan', 'Ayah');
+        $cek_data_ayah = HubunganWarga::where('warga_id', Auth::user()->data_warga_id)->where('hubungan', 'Ayah');
         if ($cek_data_ayah->count() == 1) {
             $data_ayah = $cek_data_ayah->first();
             $ayah = DataWarga::find($data_ayah->data_warga_id);
@@ -119,7 +119,7 @@ class ProfileController extends Controller
             $ayah = $cek_data_ayah->get();
             $foto_user_ayah = $cek_data_ayah->get();
         }
-        $cek_data_ibu = HubunganWarga::where('warga_id', Auth::user()->id)->where('hubungan', 'Ibu');
+        $cek_data_ibu = HubunganWarga::where('warga_id', Auth::user()->data_warga_id)->where('hubungan', 'Ibu');
         if ($cek_data_ibu->count() == 1) {
             $data_ibu = $cek_data_ibu->first();
             $ibu = DataWarga::find($data_ibu->data_warga_id);
@@ -129,7 +129,7 @@ class ProfileController extends Controller
             $foto_user_ibu = $cek_data_ibu->get();
         }
 
-        $cek_data_suami = HubunganWarga::where('warga_id', Auth::user()->id)->where('hubungan', 'Suami');
+        $cek_data_suami = HubunganWarga::where('warga_id', Auth::user()->data_warga_id)->where('hubungan', 'Suami');
         if ($cek_data_suami->count() == 1) {
             $data_suami = $cek_data_suami->first();
             $suami = DataWarga::find($data_suami->data_warga_id);
@@ -139,7 +139,7 @@ class ProfileController extends Controller
             $foto_user_suami = $cek_data_suami->get();
         }
 
-        $cek_data_istri = HubunganWarga::where('warga_id', Auth::user()->id)->where('hubungan', 'Istri');
+        $cek_data_istri = HubunganWarga::where('warga_id', Auth::user()->data_warga_id)->where('hubungan', 'Istri');
         if ($cek_data_istri->count() == 1) {
             $data_istri = $cek_data_istri->first();
             $istri = DataWarga::find($data_istri->data_warga_id);
@@ -149,7 +149,7 @@ class ProfileController extends Controller
             $foto_user_istri = $cek_data_istri->get();
         }
 
-        $cek_data_anak = HubunganWarga::where('warga_id', Auth::user()->id)->where('hubungan', 'Anak');
+        $cek_data_anak = HubunganWarga::where('warga_id', Auth::user()->data_warga_id)->where('hubungan', 'Anak');
         if ($cek_data_anak->count() == 1) {
             $data_anak = $cek_data_anak->first();
             $anak = DataWarga::find($data_anak->data_warga_id);
@@ -159,7 +159,7 @@ class ProfileController extends Controller
             $foto_user_anak = $cek_data_anak->get();
         }
 
-        $cek_data_anak_tiri = HubunganWarga::where('warga_id', Auth::user()->id)->where('hubungan', 'Anak_tiri');
+        $cek_data_anak_tiri = HubunganWarga::where('warga_id', Auth::user()->data_warga_id)->where('hubungan', 'Anak_tiri');
         if ($cek_data_anak_tiri->count() == 1) {
             $data_anak_tiri = $cek_data_anak_tiri->first();
             $anak_tiri = DataWarga::find($data_anak_tiri->data_warga_id);

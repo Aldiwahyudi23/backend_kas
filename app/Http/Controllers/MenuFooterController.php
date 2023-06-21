@@ -125,12 +125,14 @@ class MenuFooterController extends Controller
         $data->nama = $request->nama;
         $data->program_id = $request->program_id;
         $data->route_url_id = $request->route_url_id;
-        $data->icon = $request->icon;
         $data->kategori = $request->kategori;
         $data->is_active = $request->is_active;
         $data->deskripsi = $request->deskripsi;
         if ($request->foto) {
             $data->foto = "/img/menu_footer/$nama";
+        }
+        if ($request->icon) {
+            $data->icon = $request->icon;
         }
 
         $data->update();

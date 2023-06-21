@@ -7,9 +7,12 @@ use App\Http\Controllers\AllRouteUrlController;
 use App\Http\Controllers\DataWargaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HubunganWargaController;
+use App\Http\Controllers\KategoriAnggaranProgramController;
 use App\Http\Controllers\LayoutAppUserController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuFooterController;
+use App\Http\Controllers\PemasukanController;
+use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\ProfileAppController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
@@ -63,6 +66,10 @@ Route::resource('role', RoleController::class)->middleware(['auth', 'verified'])
 Route::get('/roles/trash/', [RoleController::class, 'trash'])->middleware(['auth', 'verified'])->name('role.trash');
 Route::post('/roles/kill/{id}', [RoleController::class, 'kill'])->middleware(['auth', 'verified'])->name('role.kill');
 Route::get('/roles/restore/{id}', [RoleController::class, 'restore'])->middleware(['auth', 'verified'])->name('role.restore');
+Route::resource('kategori', KategoriAnggaranProgramController::class)->middleware(['auth', 'verified']);
+Route::get('/kategoris/trash/', [KategoriAnggaranProgramController::class, 'trash'])->middleware(['auth', 'verified'])->name('kategori.trash');
+Route::post('/kategoris/kill/{id}', [KategoriAnggaranProgramController::class, 'kill'])->middleware(['auth', 'verified'])->name('kategori.kill');
+Route::get('/kategoris/restore/{id}', [KategoriAnggaranProgramController::class, 'restore'])->middleware(['auth', 'verified'])->name('kategori.restore');
 
 Route::resource('route-url', AllRouteUrlController::class)->middleware(['auth', 'verified']);
 Route::get('/route-urls/trash/', [AllRouteUrlController::class, 'trash'])->middleware(['auth', 'verified'])->name('route-url.trash');
@@ -95,5 +102,21 @@ Route::post('/pengaturan/ubah-password', [ProfileController::class, 'ubah_passwo
 Route::resource('data-hubungan-warga', HubunganWargaController::class)->middleware(['auth', 'verified']);
 
 Route::resource('data-user', UserController::class)->middleware(['auth', 'verified']);
+
+Route::resource('pengajuan', PengajuanController::class)->middleware(['auth', 'verified']);
+Route::get('/pengajuans/trash/', [PengajuanController::class, 'trash'])->middleware(['auth', 'verified'])->name('pengajuan.trash');
+Route::post('/pengajuans/kill/{id}', [PengajuanController::class, 'kill'])->middleware(['auth', 'verified'])->name('pengajuan.kill');
+Route::get('/pengajuans/restore/{id}', [PengajuanController::class, 'restore'])->middleware(['auth', 'verified'])->name('pengajuan.restore');
+Route::get('/pengajuans/kas', [PengajuanController::class, 'index_pemasukan'])->middleware(['auth', 'verified'])->name('table-pengajuan-kas');
+Route::get('/pengajuans/tabungan', [PengajuanController::class, 'index_tabungan'])->middleware(['auth', 'verified'])->name('table-pengajuan-tabungan');
+Route::get('/pengajuans/tarik/tabungan', [PengajuanController::class, 'tarik_tabungan'])->middleware(['auth', 'verified'])->name('table-pengajuan-tarik_tabungan');
+Route::get('/pengajuans/pinjam', [PengajuanController::class, 'index_pinjam'])->middleware(['auth', 'verified'])->name('table-pengajuan-pinjaman');
+Route::get('/pengajuans/bayar', [PengajuanController::class, 'index_bayar_pinjam'])->middleware(['auth', 'verified'])->name('table-pengajuan-bayar_pinjaman');
+Route::get('/pengajuans/laporan/{id}', [PengajuanController::class, 'laporan_pinjaman'])->middleware(['auth', 'verified'])->name('pengajuan.laporan');
+Route::post('/pengajuans/laporan/{id}', [PengajuanController::class, 'kirim_laporan_pinjaman'])->middleware(['auth', 'verified'])->name('kirim_pengajuan.laporan');
+
+
+Route::resource('pemasukan', PemasukanController::class)->middleware(['auth', 'verified']);
+Route::get('/pemasukans/bayar', [PemasukanController::class, 'pemasukan_index'])->middleware(['auth', 'verified'])->name('pemasukan-index');
 
 require __DIR__ . '/auth.php';
