@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\AccessMenu;
+use App\Models\AccessProgram;
+use App\Models\LayoutAppUser;
+use App\Models\Program;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class UserController extends Controller
 {
@@ -13,7 +19,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -71,7 +76,13 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $id = Crypt::decrypt($id);
+        $data = User::find($id);
+        $role = Role::all();
+        $program = Program::all();
+        $data_layout_app = LayoutAppUser::where('user_id', $id)->first();
+
+        return view('backend.master_data.data_warga.data_user.index', compact('data', 'program', 'role', 'data_layout_app'));
     }
 
     /**
@@ -79,7 +90,32 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $id = Crypt::decrypt($id);
+        $request->validate(
+            [
+                'name' => 'required',
+                'email' => 'required',
+                'role_id' => 'required',
+            ],
+            [
+                'nama.required' => 'Nama Kedah di isin',
+                'email.required' => 'email Kedah di isin',
+                'role_id.required' => 'Role Kedah di isin',
+            ]
+        );
+
+        $data_user = User::find($id);
+        $data_user->name = $request->name;
+        $data_user->email = $request->email;
+        $data_user->role_id = $request->role_id;
+        $data_user->data_warga_id = $id;
+        if ($request->password) {
+            $data_user->password = $request->password;
+        }
+
+        $data_user->update();
+
+        return redirect()->back()->with('infoes', 'Wahhhhh Account atos di edit, Mantap Luar biasa');
     }
 
     /**

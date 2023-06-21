@@ -16,6 +16,9 @@ class LayoutAppUserController extends Controller
      */
     public function index()
     {
+        $data_layout = LayoutAppUser::all();
+
+        return view('backend.layouts_user.index', compact('data_layout'));
     }
 
     /**

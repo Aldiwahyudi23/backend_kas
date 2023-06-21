@@ -43,8 +43,14 @@ class AccessProgramController extends Controller
         $data->user_id = $request->user_id;
         $data->program_id = $request->program_id;
 
-        $data->save();
-        return redirect()->back()->with('sukses', 'Atos ka tambahkeun Akses');
+        $cek_access = AccessProgram::where('user_id', $request->user_id)->where('program_id', $request->program_id);
+        if ($cek_access->count() < 1) {
+            $data->save();
+            return redirect()->back()->with('sukses', 'Wahhhhh Mantappp luar biasa atos bergabung kana program');
+        } else {
+            $cek_access->forceDelete();
+            return redirect()->back()->with('kuning', 'Yahhhhhh Akses kana program atos di putus');
+        }
     }
 
     /**

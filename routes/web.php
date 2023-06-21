@@ -119,4 +119,6 @@ Route::post('/pengajuans/laporan/{id}', [PengajuanController::class, 'kirim_lapo
 Route::resource('pemasukan', PemasukanController::class)->middleware(['auth', 'verified']);
 Route::get('/pemasukans/bayar', [PemasukanController::class, 'pemasukan_index'])->middleware(['auth', 'verified'])->name('pemasukan-index');
 
+Route::resource('user', UserController::class)->middleware(['auth', 'verified']);
+
 require __DIR__ . '/auth.php';

@@ -305,6 +305,7 @@
                                         <label for="" class="text-success"> Akun Sudah Aktif, dapat di gunakan</label>
                                         @endif
                                 </form>
+                                <a href="{{Route('user.edit',Crypt::encrypt($cek_akun->first()->id))}}" class="btn btn-success">Lihat Account</a>
                             </td>
                             @endif
                             </form>
