@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HubunganWargaController;
 use App\Http\Controllers\KategoriAnggaranProgramController;
 use App\Http\Controllers\LayoutAppUserController;
+use App\Http\Controllers\LayoutPemasukanController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuFooterController;
 use App\Http\Controllers\PemasukanController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\SubMenuController;
 use App\Http\Controllers\UserController;
 use App\Models\AccessProgram;
 use App\Models\DataWarga;
+use App\Models\Layout_Pemasukan;
 use App\Models\LayoutAppUser;
 use Illuminate\Support\Facades\Route;
 
@@ -120,5 +122,6 @@ Route::resource('pemasukan', PemasukanController::class)->middleware(['auth', 'v
 Route::get('/pemasukans/bayar', [PemasukanController::class, 'pemasukan_index'])->middleware(['auth', 'verified'])->name('pemasukan-index');
 
 Route::resource('user', UserController::class)->middleware(['auth', 'verified']);
+Route::resource('layout-halaman-pemasukan', LayoutPemasukanController::class)->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\DataWarga;
 use App\Http\Controllers\Controller;
+use App\Models\AccessProgram;
 use App\Models\FotoUser;
 use App\Models\HubunganWarga;
 use App\Models\LayoutAppUser;
+use App\Models\UpdateKerja;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -193,6 +195,20 @@ class DataWargaController extends Controller
         }
         if ($request->email) {
             $data_warga->email = $request->email;
+        }
+
+        // mengecek apakah user sudahbterdaftar
+        $user = User::where('data_warga_id', $id);
+
+        if ($user->count() == 1) {
+            $user_program = AccessProgram::where('user_id', $user->first()->id)->where('program_id', 1);
+            if ($user_program->count() == 1) {
+                $update = new UpdateKerja();
+                $update->user_id = $user->first()->id;
+                $update->status = $request->status;
+
+                $update->save();
+            }
         }
 
         $data_warga->update();

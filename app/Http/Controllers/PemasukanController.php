@@ -8,6 +8,7 @@ use App\Models\Access_Pemasukan;
 use App\Models\AccessProgram;
 use App\Models\DataWarga;
 use App\Models\KategoriAnggaranProgram;
+use App\Models\Layout_Pemasukan;
 use App\Models\Pengajuan;
 use App\Models\Program;
 use Illuminate\Http\Request;
@@ -125,10 +126,16 @@ class PemasukanController extends Controller
         $data_warga_program = AccessProgram::where('program_id', 1);
         $program = Program::find(1);
         $data_warga = DataWarga::all();
+        $layout_pemasukan = Layout_Pemasukan::first();
         $data_kategori = KategoriAnggaranProgram::all();
         $data_pemasukan_kas_user = Pemasukan::orderByRaw('created_at DESC')->where('data_warga_id', Auth::user()->data_warga_id)->get();
         $data_pemasukan_semua = Pemasukan::orderByRaw('created_at DESC')->where('kategori_id', '1')->get();
         $data_pemasukan_setor_tunai = Pemasukan::orderByRaw('created_at DESC')->where('kategori_id', '3')->get();
+
+        $cek_pengajuan = Pengajuan::where('kategori_id', 1)->where('data_warga_id', Auth::user()->data_warga_id)->count();
+        $cek_pemasukan_terakhir = Pemasukan::orderByRaw('created_at DESC LIMIT 1')->where('kategori_id', 1)->where('data_warga_id', Auth::user()->data_warga_id)->get();
+        $cek_pemasukan_terakhir_total = Pemasukan::orderByRaw('created_at DESC LIMIT 1')->where('kategori_id', 1)->where('data_warga_id', Auth::user()->data_warga_id)->count();
+        $cek_pemasukan_terakhir_all = Pemasukan::orderByRaw('created_at DESC')->where('kategori_id', 1)->where('data_warga_id', Auth::user()->data_warga_id)->sum('jumlah');
 
         return view('frontend.pemasukan.index', compact(
             'access_pemasukan',
@@ -138,7 +145,12 @@ class PemasukanController extends Controller
             'program',
             'data_pemasukan_semua',
             'data_kategori',
-            'data_pemasukan_kas_user'
+            'data_pemasukan_kas_user',
+            'layout_pemasukan',
+            'cek_pengajuan',
+            'cek_pemasukan_terakhir',
+            'cek_pemasukan_terakhir_total',
+            'cek_pemasukan_terakhir_all'
         ));
     }
 }

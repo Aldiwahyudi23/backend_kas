@@ -38,6 +38,12 @@
                         @endforeach
 
                         <!-- Akses kanggo form biasa -->
+                        @if($cek_pengajuan >= 1)
+
+                        <body class="justify-content-center">
+                            {!!$layout_pemasukan->info_proses!!}
+                        </body>
+                        @else
                         @foreach($access_pemasukan->get() as $data)
                         @if($data->is_active == 1)
                         @include('backend.transaksi.pengajuan.form.form_kas')
@@ -51,6 +57,8 @@
                         </p>
                         @endif
                         @endforeach
+                        @endif
+
 
 
                     </div>

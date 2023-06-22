@@ -1,4 +1,5 @@
 <center>
+    <img src="{{asset($layout_pemasukan->gambar)}}" alt="" width="50%">
     <h5 class="text-bold card-header bg-light p-0"> FORM PENGAJUAN</h5>
 </center>
 <hr>
@@ -6,7 +7,7 @@
     {{csrf_field()}}
     <div class="form-group">
         <label for="data_warga">Data Anggota</label>
-        <select name="data_warga" id="data_warga" class="select2bs4 form-control @error('data_warga') is-invalid @enderror">
+        <select name="data_warga" id="data_warga" class="select2bs4 col-12 form-control @error('data_warga') is-invalid @enderror">
             <?php
 
             use App\Models\User;
@@ -24,7 +25,7 @@
     </div>
     <div class="form-group">
         <label for="kategori">Kategori</label>
-        <select name="kategori_id" id="kategori_id" class="select2bs4 form-control @error('kategori_id') is-invalid @enderror">
+        <select name="kategori_id" id="kategori_id" class="select2bs4 col-12 form-control @error('kategori_id') is-invalid @enderror">
             <option value="">--Pilih Metode kategori--</option>
             @foreach($data_kategori as $data)
             <option value="{{$data->id}}">{{$data->nama_kategori}}</option>
@@ -38,7 +39,7 @@
     </div>
     <div class="form-group">
         <label for="pembayaran">Metode Pembayaran</label>
-        <select name="pembayaran" id="pembayaran" class="select2bs4 form-control @error('pembayaran') is-invalid @enderror">
+        <select name="pembayaran" id="pembayaran" class="select2bs4 col-12 form-control @error('pembayaran') is-invalid @enderror">
             <option value="">--Pilih Metode Pembayaran--</option>
             <option value="Cash">Uang Tunai</option>
             <option value="Transfer">Transfer</option>
