@@ -189,7 +189,6 @@ class DataWargaController extends Controller
         $data_warga->no_hp = $request->no_hp;
         $data_warga->agama = $request->agama;
         $data_warga->status_pernikahan = $request->status_pernikahan;
-        $data_warga->status = $request->status;
         if ($request->kelurahan) {
             $data_warga->alamat =  $request->kampung . ", RT/RW " . $request->rt . "/" . $request->rw . ", Des. " . $request->kelurahan . ", Kec. " . $request->kecamatan . ", " . $request->kota . ", " . $request->provinsi;
         }
@@ -199,16 +198,36 @@ class DataWargaController extends Controller
 
         // mengecek apakah user sudahbterdaftar
         $user = User::where('data_warga_id', $id);
+        if ($request->status) {
+            if ($user->count() == 1) {
+                $user_program = AccessProgram::where('user_id', $user->first()->id)->where('program_id', 1);
+                $cek_update_terakhir = UpdateKerja::orderByRaw('created_at DESC LIMIT 1')->where('user_id', $user->first()->id)->where('status', "Tidak Bekerja")->get();
 
-        if ($user->count() == 1) {
-            $user_program = AccessProgram::where('user_id', $user->first()->id)->where('program_id', 1);
-            if ($user_program->count() == 1) {
-                $update = new UpdateKerja();
-                $update->user_id = $user->first()->id;
-                $update->status = $request->status;
+                if ($user_program->count() == 1) {
+                    $update = new UpdateKerja();
+                    $update->user_id = $user->first()->id;
+                    $update->status = $request->status;
 
-                $update->save();
+                    // jika update kerja terakhirnya tidak bekerja trus akan update lagi ke bekerkja maka kode di bawah untuk menghitung tenor nya
+                    foreach ($cek_update_terakhir as $data) {
+                        if ($request->status == "Bekerja") {
+                            $date = date("Y-m-d");
+                            $data_created_at = date("Y-m-d", strtotime($data->created_at));
+                            $timeStart = strtotime($data_created_at);
+                            $timeEnd = strtotime("$date");
+                            // Menambah bulan ini + semua bulan pada tahun sebelumnya
+                            $numBulan = 1 + (date("Y", $timeEnd) - date("Y", $timeStart)) * 12;
+                            // menghitung selisih bulan
+                            $numBulan += date("m", $timeEnd) - date("m", $timeStart);
+
+                            // tambahan untuk menambahkan tenor
+                            $update->tenor = $numBulan;
+                        }
+                    }
+                    $update->save();
+                }
             }
+            $data_warga->status = $request->status;
         }
 
         $data_warga->update();

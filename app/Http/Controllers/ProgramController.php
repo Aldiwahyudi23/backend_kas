@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Program;
 use App\Http\Controllers\Controller;
+use App\Models\AccessProgram;
 use App\Models\Menu;
 use App\Models\Role;
 use App\Models\SubMenu;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class ProgramController extends Controller
@@ -66,9 +68,10 @@ class ProgramController extends Controller
     {
         $id = Crypt::decrypt($id);
         $data_program = Program::find($id);
+        $cek_access_program = AccessProgram::where('program_id', $id)->where('user_id', Auth::user()->id)->count();
         $data_menu_footer = SubMenu::where('menu_id', 2)->get();
 
-        return view('backend.master_data.data_program.show', compact('data_program', 'data_menu_footer'));
+        return view('backend.master_data.data_program.show', compact('data_program', 'data_menu_footer', 'cek_access_program'));
     }
 
     /**
@@ -107,6 +110,8 @@ class ProgramController extends Controller
         $data->nama_program     = $request->nama_program;
         $data->deskripsi        = $request->deskripsi;
         $data->SnK        = $request->SnK;
+        $data->jumlah        = $request->jumlah;
+        $data->tanggal        = $request->tanggal;
 
         $data->update();
         return redirect()->back()->with('infoes', 'Data Program Parantos ka geuntos');

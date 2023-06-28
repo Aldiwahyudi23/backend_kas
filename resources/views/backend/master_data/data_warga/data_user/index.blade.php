@@ -131,8 +131,6 @@
                                                   @endif
                                           </form>
                                       </td>
-
-
                                   </tr>
                                   @endforeach
                               </tbody>
@@ -155,7 +153,7 @@
                               {{csrf_field()}}
                               <div class="form-group col-12">
                                   <label for="navbar">Bagian Atas</label>
-                                  <input type="hidden" name="user_id" id="user_id" value="{{Auth::user()->id}}">
+                                  <input type="hidden" name="user_id" id="user_id" value="{{$data->id}}">
                                   <input type="color" name="navbar" id="navbar" value="{{$data_layout_app->navbar}}">
                               </div>
                               <div class="form-group col-12">

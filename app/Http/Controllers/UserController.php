@@ -108,7 +108,6 @@ class UserController extends Controller
         $data_user->name = $request->name;
         $data_user->email = $request->email;
         $data_user->role_id = $request->role_id;
-        $data_user->data_warga_id = $id;
         if ($request->password) {
             $data_user->password = $request->password;
         }

@@ -41,6 +41,24 @@
                         </div>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <label for="jumlah">jumlah untuk pembayaran </label>
+                        <input type="number" name="jumlah" class=" form-control bg-light @error('jumlah') is-invalid @enderror" id="summernote1" rows="6" value="{{ old('jumlah',$program->jumlah) }}">
+                        @error('jumlah')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggal">Tanggal di resmikan </label>
+                        <input type="datetime-local" name="tanggal" class=" form-control bg-light @error('tanggal') is-invalid @enderror" id="summernote1" rows="6" value="{{ old('tanggal',$program->tanggal) }}">
+                        @error('tanggal')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                        @enderror
+                    </div>
 
                     <hr>
                     <button onclick="tombol()" id="myBtn" type="submit" class="btn btn-primary btn-sm"><i class="fas fa-pen"></i> Geuntos</button>

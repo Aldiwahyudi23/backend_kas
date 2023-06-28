@@ -3,18 +3,32 @@
     <h5 class="text-bold card-header bg-light p-0"> FORM BAYAR KAS</h5>
 </center>
 <?php
+// mengambil tanggal ysng di resmikan pada table prograam
+
+use App\Models\Program;
+use App\Models\UpdateKerja;
+use Illuminate\Support\Facades\Auth;
+
+$program = Program::find(1); //find id 1 adalah mengambil id dari data program dengan id 1 ya itu kas keluarga
+
+// mengambil data selisih yang tidak bekerja 
+$update_kerja = UpdateKerja::where('user_id', Auth::user()->id)->sum('tenor');
+// untuk menghitung sesilih bulan dari awal sampai sekarang khusu program kas
 $date = date("Y-m-d");
-$timeStart = strtotime("2022-5-01");
+$timeStart = strtotime("$program->tanggal");
 $timeEnd = strtotime("$date");
 // Menambah bulan ini + semua bulan pada tahun sebelumnya
 $numBulan = 1 + (date("Y", $timeEnd) - date("Y", $timeStart)) * 12;
 // menghitung selisih bulan
 $numBulan += date("m", $timeEnd) - date("m", $timeStart);
 
-$all_kas = $numBulan * 50000;
+// Jatah pembayaran kas yang harus di bayar
+$all_kas = $numBulan - $update_kerja;
+// menghitung sisa penbayaran kas yang di potong karena tida bekerja , mengambil data dari data update kerja selisih kerja
+$all_kas_kerja = $all_kas * $program->jumlah;
 
-$sisa_kas = $all_kas - $cek_pemasukan_terakhir_all;
-$sisa_bulan = $sisa_kas / 50000;
+$sisa_kas = $all_kas_kerja - $cek_pemasukan_terakhir_all;
+$sisa_bulan = $sisa_kas / $program->jumlah;
 
 ?>
 @if ($cek_pemasukan_terakhir_total == 0)
@@ -26,7 +40,7 @@ $sisa_bulan = $sisa_kas / 50000;
     <tbody>
         @foreach ($cek_pemasukan_terakhir as $data)
         <tr>
-            <td>Pembayaran terakhir <b> {{$data->data_warga->nama}} </b> di Bulan <b> {{date('M-y',strtotime($data->tanggal)) }} </b> <br> <br>
+            <td>Pembayaran terakhir {{$update_kerja}} <b> {{$data->data_warga->nama}} </b> di Bulan <b> {{date('M-y',strtotime($data->tanggal)) }} </b> <br> <br>
                 @if($sisa_kas <= 0) luarrr biasa TUNTAS sadayana atos bayar ti awal sampe ayeuna bulan {{date("M-Y",$timeEnd)}}, NUHUN. Alhamdulilah Ayeuna teh nuju jalan bulan ka {{$numBulan}} <br>
                     <a href="#demo" class="btn btn-info" data-toggle="collapse">Pami bade bayar deui, Klik wae atuh supados muncul</a> @else sareng Aya <b>{{ "Rp " . number_format($sisa_kas,2,',','.') }}</b> atawa <b>{{$sisa_bulan}}</b> Bulanan nu teu acan di bayar Mangga cek wae dina story pembayaran di handap <br> Kas mulaina ti bulan {{date("M-Y",$timeStart)}}
                     @endif

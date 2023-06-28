@@ -121,8 +121,8 @@ class PemasukanController extends Controller
 
     public function pemasukan_index()
     {
-        $access_pemasukan = Access_Pemasukan::where('user_id', Auth::user()->id)->where('role_id', Auth::user()->role_id)->where('Kategori', "form");
-        $access_pemasukan_form_1 = Access_Pemasukan::where('user_id', Auth::user()->id)->where('role_id', Auth::user()->role_id)->where('Kategori', "form_1");
+        $access_pemasukan = Access_Pemasukan::where('role_id', Auth::user()->role_id)->where('Kategori', "form");
+        $access_pemasukan_form_1 = Access_Pemasukan::where('role_id', Auth::user()->role_id)->where('Kategori', "form_1");
         $data_warga_program = AccessProgram::where('program_id', 1);
         $program = Program::find(1);
         $data_warga = DataWarga::all();

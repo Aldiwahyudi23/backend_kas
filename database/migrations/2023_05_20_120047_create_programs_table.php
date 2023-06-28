@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('nama_program');
             $table->text('deskripsi');
             $table->text('SnK');
+            $table->timestamp('tanggal')->nullable();
+            $table->text('jumlah')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

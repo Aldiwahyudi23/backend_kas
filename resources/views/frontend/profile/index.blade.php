@@ -92,14 +92,12 @@
                 </tr>
                 <tr>
                     <td>Status Pernikahan</td>
-                    <td>:</td>
                     <td>{{$data_warga->status_pernikahan}}</td>
                 </tr>
 
                 @foreach($cek_data_hubungan as $data)
                 <tr>
                     <td>{{$data->hubungan}}</td>
-                    <td>:</td>
                     <td>{{$data->data_warga->nama}}</td>
                 </tr>
                 @endforeach
@@ -154,6 +152,38 @@
                     </table>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="col-12">
+    <div class="card card-dark">
+        <div class="card-header">
+            <h3 class="card-title">Rekap Pekerjaan</h3>
+        </div>
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                    <tr class="bg-light">
+                        <th>No.</th>
+                        <th>Status</th>
+                        <th>Di Input pada tanggal</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php
+                    $no = 0; ?>
+                    @foreach($kerja as $data)
+                    <?php $no++;
+                    ?>
+                    <tr>
+                        <td>{{$no}}</td>
+                        <td> {{$data->status}}</td>
+                        <td>{{$data->created_at}}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

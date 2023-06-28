@@ -16,7 +16,7 @@
             <option value="">--Pilih Anggota--</option>
             @foreach($data_warga_program->get() as $data)
             <?php
-            $warga_program = User::find($data->id)
+            $warga_program = User::find($data->user_id)
             ?>
             <option value="{{$warga_program->data_warga_id}}">{{$warga_program->data_Warga->nama}}</option>
             @endforeach

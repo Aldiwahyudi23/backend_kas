@@ -79,6 +79,7 @@
                         <h5 class="text-bold card-header bg-light p-2 text-center"> Akun Yang Terkait</h5>
                     </div>
                     <div class="card-body">
+                        @if ($data_akun == true)
                         <div class="form-group col-12">
                             <label for="navbar">{{$data_akun->email}}</label>
                         </div>
@@ -92,7 +93,9 @@
                             <label for="sider">Tidak Aktif</label>
                             @endif
                         </div>
-
+                        @else
+                        <label for="">Belum ada akun yang terkait, segera daftarkan jika ingin bisa masuk ke aplikasi</label>
+                        @endif
                     </div>
                 </div>
             </div>

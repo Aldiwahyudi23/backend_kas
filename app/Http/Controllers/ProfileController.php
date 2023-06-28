@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\UpdateKerja;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
@@ -25,10 +26,11 @@ class ProfileController extends Controller
         $data_warga = DataWarga::find(Auth::user()->data_warga_id);
         $data_akun = User::where('data_warga_id', Auth::user()->data_warga_id)->first();
         $foto = FotoUser::where('data_warga_id', Auth::user()->data_warga_id);
+        $kerja = UpdateKerja::orderByRaw('created_at DESC')->where('user_id', Auth::user()->id)->get();
 
         $cek_data_hubungan = HubunganWarga::where('warga_id', Auth::user()->data_warga_id)->get();
 
-        return view('frontend.profile.index', compact('data_warga', 'data_akun', 'foto', 'cek_data_hubungan')); //tidak aktive
+        return view('frontend.profile.index', compact('data_warga', 'data_akun', 'foto', 'cek_data_hubungan', 'kerja')); //tidak aktive
     }
 
     /**

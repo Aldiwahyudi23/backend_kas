@@ -235,7 +235,7 @@
                           <label for="status">Status</label>
                           <select id="status" name="status" class="select2bs4 form-control @error('status') is-invalid @enderror">
                               @if(old('status',$data_warga->status) == true)
-                              <option value="{{old('status',$data_warga->status)}}">{{old('status',$data_warga->status)}}</option>
+                              <option value="">{{old('status',$data_warga->status)}}</option>
                               @endif
                               <option value="">-- Pilih Status Pernikahan --</option>
                               <option value="Tidak Sekolah">Tidak Sekolah</option>

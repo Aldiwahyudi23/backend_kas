@@ -229,7 +229,7 @@
                                 <label for="status">Status</label>
                                 <select id="status" name="status" class="select2bs4 form-control @error('status') is-invalid @enderror">
                                     @if(old('status',$istri->status) == true)
-                                    <option value="{{old('status',$istri->status)}}">{{old('status',$istri->status)}}</option>
+                                    <option value="">{{old('status',$istri->status)}}</option>
                                     @endif
                                     <option value="">-- Pilih Status --</option>
                                     <option value="Bekerja">Bekerja</option>

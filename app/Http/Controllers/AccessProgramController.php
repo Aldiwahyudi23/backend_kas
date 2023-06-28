@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AccessProgram;
 use App\Http\Controllers\Controller;
+use App\Models\Access_Pemasukan;
 use App\Models\AccessMenu;
 use App\Models\DataWarga;
 use App\Models\Menu;
@@ -13,6 +14,7 @@ use App\Models\SubMenu;
 use App\Models\UpdateKerja;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class AccessProgramController extends Controller
@@ -42,13 +44,30 @@ class AccessProgramController extends Controller
     {
         $user = User::find($request->user_id);
         $data_warga = DataWarga::find($user->data_warga_id);
-        if ($data_warga->status == "Bekerja") {
 
-            $data = new AccessProgram();
-            $data->user_id = $request->user_id;
-            $data->program_id = $request->program_id;
+        $data = new AccessProgram();
+        $data->user_id = $request->user_id;
+        $data->program_id = $request->program_id;
 
-            $cek_access = AccessProgram::where('user_id', $request->user_id)->where('program_id', $request->program_id);
+
+        $cek_access = AccessProgram::where('user_id', $request->user_id)->where('program_id', $request->program_id);
+        if ($request->program_id == 1) {
+            if ($data_warga->status == "Bekerja") {
+                if ($cek_access->count() < 1) {
+                    $data->save();
+                    return redirect()->back()->with('sukses', 'Wahhhhh Mantappp luar biasa atos bergabung kana program');
+                } else {
+                    $cek_access->forceDelete();
+                    return redirect()->back()->with('kuning', 'Yahhhhhh Akses kana program atos di putus');
+                }
+
+                $update = new UpdateKerja();
+                $update->user_id = $request->user_id;
+                $update->status = $request->status;
+
+                $update->save();
+            }
+        } else {
             if ($cek_access->count() < 1) {
                 $data->save();
                 return redirect()->back()->with('sukses', 'Wahhhhh Mantappp luar biasa atos bergabung kana program');
@@ -56,14 +75,6 @@ class AccessProgramController extends Controller
                 $cek_access->forceDelete();
                 return redirect()->back()->with('kuning', 'Yahhhhhh Akses kana program atos di putus');
             }
-
-            $update = new UpdateKerja();
-            $update->user_id = $request->user_id;
-            $update->status = $request->status;
-
-            $update->save();
-        } else {
-            return redirect()->back()->with('kuning', 'Duhhhh Punten teu acan tiasa ngiringan program ieu, cek heula status peerjaan na. Program ieu tiasa di ikuti ku anggota nu tos damel');
         }
     }
 

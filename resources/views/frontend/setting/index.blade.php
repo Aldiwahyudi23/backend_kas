@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 $profile_app = ProfileApp::first();
 $warna_sid = LayoutAppUser::where('user_id', Auth::user()->id)->first();
-$access_menu = AccessMenu::orderByRaw('created_at DESC')->where('role_id', Auth::user()->id)->get();
+$access_menu = AccessMenu::orderByRaw('created_at DESC')->where('role_id', Auth::user()->role_id)->get();
 
 ?>
 <!-- ./row -->
