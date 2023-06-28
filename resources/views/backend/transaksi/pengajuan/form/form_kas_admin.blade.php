@@ -11,12 +11,11 @@
             <?php
 
             use App\Models\User;
-
             ?>
             <option value="">--Pilih Anggota--</option>
             @foreach($data_warga_program->get() as $data)
             <?php
-            $warga_program = User::find($data->user_id)
+            $warga_program = User::find($data->user_id);
             ?>
             <option value="{{$warga_program->data_warga_id}}">{{$warga_program->data_Warga->nama}}</option>
             @endforeach
@@ -71,6 +70,7 @@
     </div>
     <hr>
     <input type="hidden" name="pengaju_id" id="pengaju_id" value="{{Auth::user()->data_warga_id}}">
+    <input type="hidden" name="kode" id="kode" value="KA{{date('dmyhis') }}">
     <button onclick="tombol_kas()" id="myBtn_kas" type="submit" class="btn btn-success btn-sm"><i class="fas fa-save"></i> Yuuu Bayar</button>
     <div id="tombol_proses"></div>
 </form>

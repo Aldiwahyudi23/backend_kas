@@ -59,46 +59,102 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
+                <a href="#input" class="btn btn-info" data-toggle="collapse">Tambah Akses</a>
+                <div id="input" class="collapse">
+                    <form action="{{Route('access-pemasukan')}}" method="post" enctype="multipart/form-data">
+                        {{csrf_field()}}
+                        <div class="form-group">
+                            <label for="type">Type</label>
+                            <select name="type" id="type" class="select2 form-control col-12 @error('type') is-invalid @enderror">
+                                <option value="">--Pilih--</option>
+                                <option value="Form_input">Form Input</option>
+                                <option value="table">Table</option>
+                            </select>
+                            @error('type')
+                            <div class="invalid-feedback">
+                                <strong>{{$message}}</strong>
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Nama Role</label>
+                            <select name="role_id" id="role_id" class="select2 form-control col-12 @error('role_id') is-invalid @enderror">
+                                <option value="">--Pilih--</option>
+                                @foreach($role as $data)
+                                <option value="{{$data->id}}">{{$data->nama_role}}</option>
+                                @endforeach
+                            </select>
+                            @error('role_id')
+                            <div class="invalid-feedback">
+                                <strong>{{$message}}</strong>
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="kategori">Kategori</label>
+                            <select name="kategori" id="kategori" class="select2 form-control col-12 @error('kategori') is-invalid @enderror">
+                                <option value="">--Pilih--</option>
+                                <option value="Form_1">Form Admin</option>
+                                <option value="Form">Form</option>
+                                <option value="Semua">Table Semua</option>
+                                <option value="Anggota">Table Anggota</option>
+                                <option value="Setor">Table Setor Tunai</option>
+                            </select>
+                            @error('kategori')
+                            <div class="invalid-feedback">
+                                <strong>{{$message}}</strong>
+                            </div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-success">Simpen</button>
+                    </form>
+                </div>
+                <!-- table akses -->
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr class="bg-light">
                             <th>No.</th>
-                            <th>Nama User</th>
-                            <th>Form Admin</th>
-                            <th>Form Anggota</th>
+                            <th>Type</th>
+                            <th>Role</th>
+                            <th>Kategori</th>
                             <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <?php
-
-                        use App\Models\Access_Pemasukan;
-
                         $no = 0; ?>
-                        @foreach($user as $data)
+                        @foreach($access_pemasukan as $data)
                         <?php $no++;
-                        $cek_access_form_1 = Access_Pemasukan::where('user_id', $data->id)->where('kategori', 'form_1')->where('role_id', $data->role_id);
-                        $cek_access_form = Access_Pemasukan::where('user_id', $data->id)->where('kategori', 'form');
                         ?>
                         <tr>
                             <td>{{$no}}</td>
-                            <td>{{$data->data_warga->nama}}</td>
+                            <td>{{$data->type}}</td>
+                            <td>{{$data->role->nama_role}}</td>
+                            <td>{{$data->kategori}}</td>
                             <td>
-                                @if($cek_access_form_1->count() == 1)
-                                ON
-                                @else
-                                OFF
-                                @endif
+                                <form action="{{Route('is_active_access',Crypt::encrypt($data->id))}}" method="post" enctype="multipart/form-data">
+                                    @method('POST')
+                                    {{csrf_field()}}
+                                    @if($data->is_active == 1)
+                                    <input type="hidden" name="is_active" id="is_active" value="0">
+                                    <button type="submit" class="btn btn-success">Aktif</button>
+                                    @else
+                                    <input type="hidden" name="is_active" id="is_active" value="1">
+                                    <button type="submit" class="btn btn-danger">Tidak Aktif</button>
+                                    @endif
+                                </form>
                             </td>
                             <td>
-                                @if($cek_access_form->count() == 1)
-                                ON
-                                @else
-                                OFF
-                                @endif
-                            </td>
-                            <td>
+
+                                <form action="{{route('access_pemasukan_hapus',Crypt::encrypt($data->id))}}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    @if (auth()->user()->role->nama_role == 'Admin')
+                                    <button class="btn btn-link btn-sm mt-2"><i class="nav-icon fas fa-trash-alt" onclick="return confirm('Leres bade ngahapus data anu namina  ?')"></i> Hapus</button>
+                                    @endif
+                                </form>
                             </td>
                         </tr>
                         @endforeach

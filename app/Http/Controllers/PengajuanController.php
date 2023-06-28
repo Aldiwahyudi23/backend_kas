@@ -54,6 +54,7 @@ class PengajuanController extends Controller
 
         $data_pengajuan = new Pengajuan();
 
+        $data_pengajuan->kode = $request->kode;
         $data_pengajuan->jumlah = $request->jumlah;
         $data_pengajuan->pembayaran = $request->pembayaran;
         $data_pengajuan->keterangan = $request->keterangan;

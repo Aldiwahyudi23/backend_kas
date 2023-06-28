@@ -1,9 +1,9 @@
  <thead>
      <tr>
          <th>No</th>
+         <th>ID Transaksi</th>
          <th>Bulan</th>
          <th>Nominal</th>
-         <th>Anggota</th>
          <th>Di Input oleh </th>
          <th>Pembayaran</th>
          <th>Ket</th>
@@ -22,9 +22,9 @@
      <?php $no++; ?>
      <tr>
          <td>{{$no}}</td>
+         <td>{{$data->kode}}</td>
          <td>{{date('M-y',strtotime($data->tanggal)) }}</td>
          <td>{{ "Rp " . number_format($data->jumlah) }}</td>
-         <td>{{$data->data_warga->nama}}</td>
          <td>{{$data->pengaju->nama}}</td>
          <td>{{$data->pembayaran}}</td>
          <td style="width:100%;"> {!!$data->keterangan!!}</td>

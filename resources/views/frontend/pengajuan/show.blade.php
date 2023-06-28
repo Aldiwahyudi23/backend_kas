@@ -96,6 +96,7 @@
                             <div id="tombol_proses"></div>
 
                             <input type="hidden" id="pengajuan_id" name="pengajuan_id" value="{{ $data_pengajuan->id }}">
+                            <input type="hidden" id="kode" name="kode" value="{{ $data_pengajuan->kode }}">
                             <input type="hidden" id="data_warga" name="data_warga" value="{{ $data_pengajuan->data_warga_id }}">
                             <input type="hidden" id="pengaju_id" name="pengaju_id" value="{{ $data_pengajuan->pengaju_id }}">
                             <input type="hidden" id="jumlah" name="jumlah" value=" {{ $data_pengajuan->jumlah }}">

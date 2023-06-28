@@ -82,32 +82,22 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="custom-tabs-one-Kas-tab" data-toggle="pill" href="#custom-tabs-one-Kas" role="tab" aria-controls="custom-tabs-one-Kas" aria-selected="true">Kas</a>
                     </li>
-
+                    @foreach($access_pemasukan_table->get() as $data)
                     <li class="nav-item">
-                        <a class="nav-link " id="custom-tabs-one-tabungan-tab" data-toggle="pill" href="#custom-tabs-one-tabungan" role="tab" aria-controls="custom-tabs-one-tabungan" aria-selected="false">Tabungan</a>
+                        <a class="nav-link" id="custom-tabs-one-home-tab" data-toggle="pill" href="#{{$data->kategori}}" role="tab" aria-controls="custom-tabs-one-home" aria-selected="false">{{$data->kategori}}</a>
                     </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="false">Semua</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Anggota</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill" href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">Setor Tunai</a>
-                    </li>
+                    @endforeach
 
                 </ul>
             </div>
             <div class="card-body">
                 <div class="tab-content" id="custom-tabs-one-tabContent">
-                    <div class="tab-pane fade " id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                    <div class="tab-pane fade " id="Semua" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
                         <table id="example1" class="table table-bordered table-striped table-responsive">
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Kode</th>
                                     <th>Nama</th>
                                     <th>Nominal</th>
                                     <th>Bulan</th>
@@ -122,6 +112,7 @@
                                 <?php $no++; ?>
                                 <tr>
                                     <td>{{$no}}</td>
+                                    <td>{{$data->kode}}</td>
                                     <td>{{$data->data_warga->nama}}</td>
                                     <td>{{ "Rp " . number_format($data->jumlah,2,',','.') }}</td>
                                     <td>{{date('M-y',strtotime($data->tanggal)) }}</td>
@@ -145,15 +136,15 @@
                         </table>
                         <!-- /.table-body -->
                     </div>
-                    <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
+                    <div class="tab-pane fade" id="Anggota" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
                         <table id="table4" class="table table-bordered table-striped table-responsive">
 
                         </table>
                         <!-- /.table-body -->
                     </div>
-                    <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
+                    <div class="tab-pane fade" id="Setor" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
                         <table id="table5" class="table table-bordered table-striped table-responsive">
-
+                            @include('frontend.pemasukan.table.setor_tunai')
                         </table>
                         <!-- /.table-body -->
                     </div>

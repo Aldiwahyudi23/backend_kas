@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('access__pemasukans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users');
+            $table->string('type');
             $table->foreignId('role_id')->references('id')->on('roles');
             $table->string('kategori');
             $table->enum('is_active', ['1', '0']);

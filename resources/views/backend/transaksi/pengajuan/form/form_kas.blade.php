@@ -104,6 +104,7 @@ $sisa_bulan = $sisa_kas / $program->jumlah;
             <input type="hidden" name="data_warga" id="data_warga" value="{{Auth::user()->data_warga_id}}">
             <input type="hidden" name="pengaju_id" id="pengaju_id" value="{{Auth::user()->data_warga_id}}">
             <input type="hidden" name="kategori_id" id="kategori_id" value="1">
+            <input type="hidden" name="kode" id="kode" value="KA{{date('dmyhis') }}">
 
             <button onclick="tombol_kas()" id="myBtn_kas" type="submit" class="btn btn-success btn-sm"><i class="fas fa-save"></i> Yuuu Bayar</button>
             <div id="tombol_proses"></div>

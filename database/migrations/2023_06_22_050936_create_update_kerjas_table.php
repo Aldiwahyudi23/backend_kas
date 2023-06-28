@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->string('status');
+            $table->string('tenor')->nullable();
             $table->timestamps();
         });
     }

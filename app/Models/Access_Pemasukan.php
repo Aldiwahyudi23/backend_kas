@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Access_Pemasukan extends Model
 {
     use HasFactory;
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

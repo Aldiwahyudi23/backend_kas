@@ -20,6 +20,7 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubMenuController;
 use App\Http\Controllers\UserController;
+use App\Models\Access_Pemasukan;
 use App\Models\AccessProgram;
 use App\Models\DataWarga;
 use App\Models\Layout_Pemasukan;
@@ -119,9 +120,17 @@ Route::post('/pengajuans/laporan/{id}', [PengajuanController::class, 'kirim_lapo
 
 
 Route::resource('pemasukan', PemasukanController::class)->middleware(['auth', 'verified']);
+Route::get('/pemasukans/trash/', [PemasukanController::class, 'trash'])->middleware(['auth', 'verified'])->name('pemasukan.trash');
+Route::post('/pemasukans/kill/{id}', [PemasukanController::class, 'kill'])->middleware(['auth', 'verified'])->name('pemasukan.kill');
+Route::get('/pemasukans/restore/{id}', [PemasukanController::class, 'restore'])->middleware(['auth', 'verified'])->name('pemasukan.restore');
+
 Route::get('/pemasukans/bayar', [PemasukanController::class, 'pemasukan_index'])->middleware(['auth', 'verified'])->name('pemasukan-index');
 
 Route::resource('user', UserController::class)->middleware(['auth', 'verified']);
 Route::resource('layout-halaman-pemasukan', LayoutPemasukanController::class)->middleware(['auth', 'verified']);
+Route::post('layout-halaman-pemasukan/access-pemasukan', [LayoutPemasukanController::class, 'access_pemasukan'])->middleware(['auth', 'verified'])->name('access-pemasukan');
+Route::post('/layout-halaman-pemasukan/access-pemasukan/is-active/{id}', [LayoutPemasukanController::class, 'is_active_access'])->middleware(['auth', 'verified'])->name('is_active_access');
+Route::delete('/layout-halaman-pemasukan/access-pemasukan/hapus/{id}', [LayoutPemasukanController::class, 'access_pemasukan_hapus'])->middleware(['auth', 'verified'])->name('access_pemasukan_hapus');
+
 
 require __DIR__ . '/auth.php';

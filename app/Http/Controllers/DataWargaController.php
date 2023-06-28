@@ -60,21 +60,21 @@ class DataWargaController extends Controller
 
             ],
             [
-                'nama.required' => 'Nama Harus Di Isin',
-                'tanggal_lahir.required' => 'Tanggal lahir Harus Di Isin',
-                'tempat_lahir.required' => 'Tempat Lahir Harus Di Isin',
-                'no_hp.required' => 'No HP Harus Di Isin',
-                'agama.required' => 'Agama Harus Di Isin',
-                'status_pernikahan.required' => 'Status Pernikahan Harus Di Isin',
-                'status.required' => 'Status Harus Di Isin',
+                'nama.required' => 'Nama Harus Di Isi',
+                'tanggal_lahir.required' => 'Tanggal lahir Harus Di Isi',
+                'tempat_lahir.required' => 'Tempat Lahir Harus Di Isi',
+                'no_hp.required' => 'No HP Harus Di Isi',
+                'agama.required' => 'Agama Harus Di Isi',
+                'status_pernikahan.required' => 'Status Pernikahan Harus Di Isi',
+                'status.required' => 'Status Harus Di Isi',
 
-                'provinsi.required' => 'provinsi Harus Di Isin',
-                'kota.required' => 'kota Harus Di Isin',
-                'kecamatan.required' => 'kecamatan Harus Di Isin',
-                'kelurahan.required' => 'kelurahan Harus Di Isin',
-                'kampung.required' => 'kampung Harus Di Isin',
-                'rt.required' => 'rt Harus Di Isin',
-                'rw.required' => 'rw Harus Di Isin',
+                'provinsi.required' => 'provinsi Harus Di Isi',
+                'kota.required' => 'kota Harus Di Isi',
+                'kecamatan.required' => 'kecamatan Harus Di Isi',
+                'kelurahan.required' => 'kelurahan Harus Di Isi',
+                'kampung.required' => 'kampung Harus Di Isi',
+                'rt.required' => 'rt Harus Di Isi',
+                'rw.required' => 'rw Harus Di Isi',
             ]
         );
 

@@ -23,4 +23,8 @@ class Pemasukan extends Model
     {
         return $this->belongsTo(DataWarga::class);
     }
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriAnggaranProgram::class);
+    }
 }

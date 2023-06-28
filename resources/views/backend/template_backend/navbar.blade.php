@@ -1,28 +1,51 @@
  <!-- pengambil data untuk profile app -->
  <?php
 
+    use App\Models\AccessProgram;
+    use App\Models\DataWarga;
+    use App\Models\FotoUser;
     use App\Models\LayoutAppUser;
+    use App\Models\MenuFooter;
     use App\Models\ProfileApp;
+    use App\Models\User;
     use Illuminate\Support\Facades\Auth;
 
     $profile_app = ProfileApp::first();
     $warna_nav = LayoutAppUser::where('user_id', Auth::user()->id)->first();
+
+    $profile_app = ProfileApp::first();
+    $warna_menu = LayoutAppUser::where('user_id', Auth::user()->id)->first();
+    $data_menu_footer = MenuFooter::where('is_active', 1)->get();
+
+    $user = DataWarga::find(Auth::user()->data_warga_id);
+    $foto = FotoUser::where('data_warga_id', $user->id)->where('is_active', 1)->first();
+
     ?>
 
  <!-- Navbar -->
  <nav class="main-header navbar navbar-expand navbar-dark" style="background-color: {{$warna_nav->navbar}};">
      <!-- Left navbar links -->
      <ul class="navbar-nav">
+         @foreach($data_menu_footer as $data)
+         <?php $access_program = AccessProgram::where('user_id', Auth::user()->id)->where('program_id', $data->program_id); ?>
+         @if( $access_program->count() == 1)
+         @if($data->kategori == 1)
+         <li class="nav-item d-none d-sm-inline-block">
+             <a href="{{Route($data->route_url->route_name)}}" class="nav-link" id="{{$data->nama}}">{{$data->nama}}</a>
+         </li>
+         @endif
+         @endif
+         @if($data->program_id == 0)
+         <li class="nav-item d-none d-sm-inline-block">
+             <a href="{{Route($data->route_url->route_name)}}" class="nav-link" id="{{$data->nama}}">{{$data->nama}}</a>
+         </li>
+         @endif
+         @endforeach
+
          <li class="nav-item ">
              <a class="nav-link" data-widget="pushmenu" href="#" role="button">
                  <img src="{{ asset($profile_app->logo) }}" alt="" class=" img-circle " width="30px">
              </a>
-         </li>
-         <li class="nav-item d-none d-sm-inline-block">
-             <a href="index3.html" class="nav-link">Home</a>
-         </li>
-         <li class="nav-item d-none d-sm-inline-block">
-             <a href="#" class="nav-link">Contact</a>
          </li>
      </ul>
 
