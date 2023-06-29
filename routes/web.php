@@ -11,6 +11,7 @@ use App\Http\Controllers\HubunganWargaController;
 use App\Http\Controllers\KategoriAnggaranProgramController;
 use App\Http\Controllers\LayoutAppUserController;
 use App\Http\Controllers\LayoutPemasukanController;
+use App\Http\Controllers\LayoutPengeluaranController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuFooterController;
 use App\Http\Controllers\PemasukanController;
@@ -27,6 +28,7 @@ use App\Models\AccessProgram;
 use App\Models\DataWarga;
 use App\Models\Layout_Pemasukan;
 use App\Models\LayoutAppUser;
+use App\Models\LayoutPengeluaran;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -127,18 +129,20 @@ Route::post('/pemasukans/kill/{id}', [PemasukanController::class, 'kill'])->midd
 Route::get('/pemasukans/restore/{id}', [PemasukanController::class, 'restore'])->middleware(['auth', 'verified'])->name('pemasukan.restore');
 Route::get('/pemasukans/bayar', [PemasukanController::class, 'pemasukan_index'])->middleware(['auth', 'verified'])->name('pemasukan-index');
 
-Route::resource('pengeluaran', PengeluaranController::class)->middleware(['auth', 'verified']);
-Route::get('/pengeluarans/trash/', [PengeluaranController::class, 'trash'])->middleware(['auth', 'verified'])->name('pengeluaran.trash');
-Route::post('/pengeluarans/kill/{id}', [PengeluaranController::class, 'kill'])->middleware(['auth', 'verified'])->name('pengeluaran.kill');
-Route::get('/pengeluarans/restore/{id}', [PengeluaranController::class, 'restore'])->middleware(['auth', 'verified'])->name('pengeluaran.restore');
-Route::get('/pengeluarans/bayar', [PengeluaranController::class, 'pengeluaran_index'])->middleware(['auth', 'verified'])->name('pengeluaran-index');
-
 Route::resource('user', UserController::class)->middleware(['auth', 'verified']);
 Route::resource('layout-halaman-pemasukan', LayoutPemasukanController::class)->middleware(['auth', 'verified']);
 Route::post('layout-halaman-pemasukan/access-pemasukan', [LayoutPemasukanController::class, 'access_pemasukan'])->middleware(['auth', 'verified'])->name('access-pemasukan');
 Route::post('/layout-halaman-pemasukan/access-pemasukan/is-active/{id}', [LayoutPemasukanController::class, 'is_active_access'])->middleware(['auth', 'verified'])->name('is_active_access');
 Route::delete('/layout-halaman-pemasukan/access-pemasukan/hapus/{id}', [LayoutPemasukanController::class, 'access_pemasukan_hapus'])->middleware(['auth', 'verified'])->name('access_pemasukan_hapus');
 
+
+Route::resource('pengeluaran', PengeluaranController::class)->middleware(['auth', 'verified']);
+Route::get('/pengeluarans/trash/', [PengeluaranController::class, 'trash'])->middleware(['auth', 'verified'])->name('pengeluaran.trash');
+Route::post('/pengeluarans/kill/{id}', [PengeluaranController::class, 'kill'])->middleware(['auth', 'verified'])->name('pengeluaran.kill');
+Route::get('/pengeluarans/restore/{id}', [PengeluaranController::class, 'restore'])->middleware(['auth', 'verified'])->name('pengeluaran.restore');
+Route::get('/pengeluarans/bayar', [PengeluaranController::class, 'pengeluaran_index'])->middleware(['auth', 'verified'])->name('pengeluaran-index');
+
+Route::resource('layout-halaman-pengeluaran', LayoutPengeluaranController::class)->middleware(['auth', 'verified']);
 // Data Anggaran
 Route::resource('anggaran', AnggaranController::class)->middleware(['auth', 'verified']);
 Route::get('/anggarans/trash/', [AnggaranController::class, 'trash'])->middleware(['auth', 'verified'])->name('anggaran.trash');

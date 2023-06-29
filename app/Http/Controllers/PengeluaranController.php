@@ -7,7 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\AccessProgram;
 use App\Models\Anggaran;
 use App\Models\DataWarga;
+use App\Models\HubunganWarga;
+use App\Models\LayoutPengeluaran;
 use App\Models\Pengajuan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -205,5 +208,41 @@ class PengeluaranController extends Controller
 
         $data_pengeluaran->forceDelete();
         return redirect()->back()->with('kuning', 'Data pengeluaran parantos di hapus dina sampah');
+    }
+
+    public function pengeluaran_index()
+    {
+        $data_user = User::all();
+        $data_pengeluaran_pinjaman = Pengeluaran::where('data_warga_id', Auth::user()->data_warga_id)->where('anggaran_id', 3); //mengambil data pinjaman user
+        $data_hubungan = HubunganWarga::where('warga_id', Auth::user()->data_warga_id)->get(); //mengambil data hubungan dengan anggota
+        $data_warga = DataWarga::all(); //mengambil data data warga
+
+        $cek_pengajuan = Pengajuan::where('data_warga_id', Auth::user()->data_warga_id)->where('kategori_id', 3)->count();
+        $cek_pengajuan_proses = Pengajuan::where('data_warga_id', Auth::user()->data_warga_id)->get();
+
+        $cek_pengeluaran_pinjaman = Pengeluaran::where('anggaran_id', 3)->where('status', 'Nunggak')->count(); //mengecek apakah pinjaman yang masih nunggak sudah melebihi batas yang telah di tentukan
+        $cek_pengeluaran_pinjaman_user = Pengeluaran::where('anggaran_id', 3)->where('data_warga_id', Auth::user()->data_warga_id)->where('status', 'Nunggak')->count(); //mengecek pinjaman apakah sudah lunas atau masih nunggak
+        // Data Anggaran
+        $data_anggaran = Anggaran::all();
+        $data_anggaran_max_pinjaman = Anggaran::find(3);
+
+        $layout_pengeluaran = LayoutPengeluaran::first();
+
+        $cek_total_pinjaman = 500000;
+
+        return view('frontend.pengeluaran.index', compact(
+            'data_user',
+            'data_warga',
+            'data_pengeluaran_pinjaman',
+            'data_hubungan',
+            'cek_pengajuan',
+            'cek_pengajuan_proses',
+            'cek_pengeluaran_pinjaman',
+            'cek_pengeluaran_pinjaman_user',
+            'data_anggaran',
+            'data_anggaran_max_pinjaman',
+            'layout_pengeluaran',
+            'cek_total_pinjaman'
+        ));
     }
 }

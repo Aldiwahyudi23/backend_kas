@@ -84,7 +84,6 @@ class PemasukanController extends Controller
             $data_pemasukan->pengurus_id = $request->pengurus_id;
             $data_pemasukan->kode =  $data_ketegori->kode . date('dmyhis', strtotime($request->tanggal));
         }
-
         // ini untuk ngambil data dari penginputan dari d=form bayar
         if ($request->cek_data == "admin") {
             $data_pemasukan->pengurus_id = Auth::user()->data_warga_id;
