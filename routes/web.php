@@ -4,6 +4,7 @@ use App\Http\Controllers\AccessMenuController;
 use App\Http\Controllers\AccessProgramController;
 use App\Http\Controllers\AccessSubMenuController;
 use App\Http\Controllers\AllRouteUrlController;
+use App\Http\Controllers\AnggaranController;
 use App\Http\Controllers\DataWargaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HubunganWargaController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuFooterController;
 use App\Http\Controllers\PemasukanController;
 use App\Http\Controllers\PengajuanController;
+use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\ProfileAppController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
@@ -123,8 +125,13 @@ Route::resource('pemasukan', PemasukanController::class)->middleware(['auth', 'v
 Route::get('/pemasukans/trash/', [PemasukanController::class, 'trash'])->middleware(['auth', 'verified'])->name('pemasukan.trash');
 Route::post('/pemasukans/kill/{id}', [PemasukanController::class, 'kill'])->middleware(['auth', 'verified'])->name('pemasukan.kill');
 Route::get('/pemasukans/restore/{id}', [PemasukanController::class, 'restore'])->middleware(['auth', 'verified'])->name('pemasukan.restore');
-
 Route::get('/pemasukans/bayar', [PemasukanController::class, 'pemasukan_index'])->middleware(['auth', 'verified'])->name('pemasukan-index');
+
+Route::resource('pengeluaran', PengeluaranController::class)->middleware(['auth', 'verified']);
+Route::get('/pengeluarans/trash/', [PengeluaranController::class, 'trash'])->middleware(['auth', 'verified'])->name('pengeluaran.trash');
+Route::post('/pengeluarans/kill/{id}', [PengeluaranController::class, 'kill'])->middleware(['auth', 'verified'])->name('pengeluaran.kill');
+Route::get('/pengeluarans/restore/{id}', [PengeluaranController::class, 'restore'])->middleware(['auth', 'verified'])->name('pengeluaran.restore');
+Route::get('/pengeluarans/bayar', [PengeluaranController::class, 'pengeluaran_index'])->middleware(['auth', 'verified'])->name('pengeluaran-index');
 
 Route::resource('user', UserController::class)->middleware(['auth', 'verified']);
 Route::resource('layout-halaman-pemasukan', LayoutPemasukanController::class)->middleware(['auth', 'verified']);
@@ -132,5 +139,9 @@ Route::post('layout-halaman-pemasukan/access-pemasukan', [LayoutPemasukanControl
 Route::post('/layout-halaman-pemasukan/access-pemasukan/is-active/{id}', [LayoutPemasukanController::class, 'is_active_access'])->middleware(['auth', 'verified'])->name('is_active_access');
 Route::delete('/layout-halaman-pemasukan/access-pemasukan/hapus/{id}', [LayoutPemasukanController::class, 'access_pemasukan_hapus'])->middleware(['auth', 'verified'])->name('access_pemasukan_hapus');
 
-
+// Data Anggaran
+Route::resource('anggaran', AnggaranController::class)->middleware(['auth', 'verified']);
+Route::get('/anggarans/trash/', [AnggaranController::class, 'trash'])->middleware(['auth', 'verified'])->name('anggaran.trash');
+Route::post('/anggarans/kill/{id}', [AnggaranController::class, 'kill'])->middleware(['auth', 'verified'])->name('anggaran.kill');
+Route::get('/anggarans/restore/{id}', [AnggaranController::class, 'restore'])->middleware(['auth', 'verified'])->name('anggaran.restore');
 require __DIR__ . '/auth.php';

@@ -22,6 +22,15 @@
                         </div>
                         @enderror
                     </div>
+                    <div class="form-group row">
+                        <label for="kode">Kode Kategori</label>
+                        <input type="text" id="kode" name="kode" value="{{ old('kode') }}" placeholder="Nama kategori" class="form-control col-12 @error('kode') is-invalid @enderror">
+                        @error('kode')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                        @enderror
+                    </div>
                     <div class="form-group">
                         <label for="deskripsi">Deskripsi</label>
                         <textarea name="deskripsi" class="textarea form-control bg-light @error('deskripsi') is-invalid @enderror" id="summernote" rows="6" value="{{ old('deskripsi') }}">{{ old('deskripsi') }}</textarea>
@@ -52,6 +61,7 @@
                         <tr class="bg-light">
                             <th>No.</th>
                             <th>Nama Kategori</th>
+                            <th>Kode Kategori</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -63,6 +73,7 @@
                         <tr>
                             <td>{{$no}}</td>
                             <td>{{$data->nama_kategori}}</td>
+                            <td>{{$data->kode}}</td>
                             <td>
                                 <form action="{{route('kategori.destroy',Crypt::encrypt($data->id))}}" method="POST">
                                     @csrf

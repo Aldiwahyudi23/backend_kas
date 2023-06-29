@@ -24,6 +24,16 @@
                         </div>
                         @enderror
                     </div>
+                    <div class="form-group row">
+                        <label for="kode">Kode kategori</label>
+                        <input type="hidden" name="id" value="{{ $kategori->id }}">
+                        <input type="text" id="kode" name="kode" value="{{ old('kode',$kategori->kode) }}" placeholder="Nama kategori" class="form-control col-12 @error('kode') is-invalid @enderror">
+                        @error('kode')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                        @enderror
+                    </div>
                     <div class="form-group">
                         <label for="deskripsi">Deskripsi</label>
                         <textarea name="deskripsi" class="textarea form-control bg-light @error('deskripsi') is-invalid @enderror" id="summernote" rows="6" value="{{ old('deskripsi') }}">{!! $kategori->deskripsi !!}</textarea>
@@ -54,6 +64,7 @@
                         <tr class="bg-light">
                             <th>No.</th>
                             <th>Nama kategori</th>
+                            <th>Kode</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -65,6 +76,7 @@
                         <tr>
                             <td>{{$no}}</td>
                             <td>{{$data->nama_kategori}}</td>
+                            <td>{{$data->kode}}</td>
                             <td>
                                 <a href="{{route('kategori.show',Crypt::encrypt($data->id))}}" class=""><i class="nav-icon fas fa-book"></i></a>
                                 <a href="{{route('kategori.edit',Crypt::encrypt($data->id))}}" class=""><i class="nav-icon fas fa-pencil-alt"></i></a>

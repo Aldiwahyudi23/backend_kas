@@ -23,8 +23,10 @@ class PemasukanController extends Controller
     public function index()
     {
         $data_pemasukan = Pemasukan::orderByRaw('created_at DESC')->get();
+        $data_warga_program = AccessProgram::where('program_id', 1);
+        $data_kategori = KategoriAnggaranProgram::all();
 
-        return view('backend.transaksi.pemasukan.index', compact('data_pemasukan'));
+        return view('backend.transaksi.pemasukan.index', compact('data_pemasukan', 'data_warga_program', 'data_kategori'));
     }
 
     /**
@@ -60,9 +62,9 @@ class PemasukanController extends Controller
             $nama = 'bukti-' . date('Y-m-dHis') . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('/img/bukti'), $nama);
         }
+        $data_ketegori = KategoriAnggaranProgram::find($request->kategori_id);
 
         $data_pemasukan = new Pemasukan();
-        $data_pemasukan->kode = $request->kode;
         $data_pemasukan->data_warga_id = $request->data_warga;
         $data_pemasukan->pengaju_id = $request->pengaju_id;
         $data_pemasukan->jumlah = $request->jumlah;
@@ -70,7 +72,6 @@ class PemasukanController extends Controller
         $data_pemasukan->kategori_id = $request->kategori_id;
         $data_pemasukan->keterangan = $request->keterangan;
         $data_pemasukan->tanggal = $request->tanggal;
-        $data_pemasukan->pengurus_id = Auth::user()->data_warga_id;
 
         if ($request->foto) {
             $data_pemasukan->foto          = "/img/bukti/$nama";
@@ -78,10 +79,29 @@ class PemasukanController extends Controller
         if ($request->foto1) {
             $data_pemasukan->foto          = $request->foto1;
         }
+        // ini untuk penginputan kusus admin
+        if ($request->cek_data == "input_admin") {
+            $data_pemasukan->pengurus_id = $request->pengurus_id;
+            $data_pemasukan->kode =  $data_ketegori->kode . date('dmyhis', strtotime($request->tanggal));
+        }
+
+        // ini untuk ngambil data dari penginputan dari d=form bayar
+        if ($request->cek_data == "admin") {
+            $data_pemasukan->pengurus_id = Auth::user()->data_warga_id;
+            $data_pemasukan->kode = $data_ketegori->kode . date('dmyhis');
+        } elseif ($request->cek_data == "input_admin") {
+            $data_pemasukan->pengurus_id = $request->pengurus_id;
+            $data_pemasukan->kode =  $data_ketegori->kode . date('dmyhis', strtotime($request->tanggal));
+        } else {
+            $data_pemasukan->pengurus_id = Auth::user()->data_warga_id;
+            $data_pemasukan->kode = $request->kode; //jika kode ini di ambil dari pengajuan maka ngambil dari sini
+        }
 
         $data_pemasukan->save();
+
         // jika ada pengajuan ID hapus
         if ($request->pengajuan_id) {
+
             $pengajuan = Pengajuan::find($request->pengajuan_id);
             $pengajuan->delete();
             return redirect('/pengajuans/kas')->with('sukses', 'Wihhhh mantappp hatur nuhun atos ngaKONFIRMASI pengajuan pemabyaran KAS keluarga. Lancar selalu');

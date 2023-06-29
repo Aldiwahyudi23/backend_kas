@@ -70,7 +70,7 @@
     </div>
     <hr>
     <input type="hidden" name="pengaju_id" id="pengaju_id" value="{{Auth::user()->data_warga_id}}">
-    <input type="hidden" name="kode" id="kode" value="KA{{date('dmyhis') }}">
+    <input type="hidden" name="cek_data" id="cek_data" value="admin">
     <button onclick="tombol_kas()" id="myBtn_kas" type="submit" class="btn btn-success btn-sm"><i class="fas fa-save"></i> Yuuu Bayar</button>
     <div id="tombol_proses"></div>
 </form>

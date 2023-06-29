@@ -1,0 +1,209 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Pengeluaran;
+use App\Http\Controllers\Controller;
+use App\Models\AccessProgram;
+use App\Models\Anggaran;
+use App\Models\DataWarga;
+use App\Models\Pengajuan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+
+class PengeluaranController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $data_pengeluaran = Pengeluaran::all();
+        $data_warga_program = AccessProgram::where('program_id', 1);
+        $data_warga = DataWarga::all();
+        $data_anggaran = Anggaran::all();
+
+        return view('backend.transaksi.pengeluaran.index', compact('data_pengeluaran', 'data_warga_program', 'data_warga', 'data_anggaran'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'data_warga' => 'required',
+            'anggaran_id' => 'required',
+            'jumlah' => 'required|numeric',
+            'keterangan' => 'required',
+        ], [
+            'data_warga.required' => 'data_warga kedah di pilih',
+            'anggaran_id.required' => 'anggaran kedah di pilih',
+            'jumlah.required' => 'Nominal kedah di isi',
+            'jumlah.numeric' => 'Nominal teu kengeng kangge titik',
+            'keterangan.required' => 'keterangan kedah di isi',
+        ]);
+        $data_anggaran = Anggaran::find($request->anggaran_id);
+
+        $data_pengeluaran = new Pengeluaran();
+        $data_pengeluaran->data_warga_id = $request->data_warga;
+        $data_pengeluaran->pengaju_id = $request->pengaju_id;
+        $data_pengeluaran->jumlah = $request->jumlah;
+        $data_pengeluaran->anggaran_id = $request->anggaran_id;
+        $data_pengeluaran->alasan = $request->keterangan;
+        $data_pengeluaran->tanggal = $request->tanggal;
+        // ini di ambil jika ada reques jika tidak kosongkan
+        if ($request->status) {
+            $data_pengeluaran->status          = $request->status;
+        }
+        if ($request->ketua) {
+            $data_pengeluaran->ketua          = $request->ketua;
+        }
+        if ($request->bendahara) {
+            $data_pengeluaran->bendahara          = $request->bendahara;
+        }
+        if ($request->sekertaris) {
+            $data_pengeluaran->sekertaris          = $request->sekertaris;
+        }
+
+        // ini untuk ngambil data dari penginputan dari d=form bayar
+        if ($request->cek_data == "admin") {
+            $data_pengeluaran->pengurus_id = Auth::user()->data_warga_id;
+            $data_pengeluaran->kode = $data_anggaran->kode . date('dmyhis');
+        } elseif ($request->cek_data == "input_admin") {
+            $data_pengeluaran->pengurus_id = $request->pengurus_id;
+            $data_pengeluaran->kode =  $data_anggaran->kode . date('dmyhis', strtotime($request->tanggal));
+        } else {
+            $data_pengeluaran->pengurus_id = Auth::user()->data_warga_id;
+            $data_pengeluaran->kode = $request->kode; //jika kode ini di ambil dari pengajuan maka ngambil dari sini
+        }
+
+        $data_pengeluaran->save();
+
+        // jika ada pengajuan ID hapus
+        if ($request->pengajuan_id) {
+
+            $pengajuan = Pengajuan::find($request->pengajuan_id);
+            $pengajuan->delete();
+            return redirect('/pengajuans/kas')->with('sukses', 'Wihhhh mantappp hatur nuhun atos ngaKONFIRMASI pengajuan pemabyaran KAS keluarga. Lancar selalu');
+        } else {
+            return redirect()->back()->with('sukses', 'Wihhhh mantappp hatur nuhun atos masukeun data pembayaran KAS keluarga. Lancar selalu ATOS LEBET');
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $id = Crypt::decrypt($id);
+
+        $data_pengeluaran = Pengeluaran::Find($id);
+        return view('backend.transaksi.pengeluaran.show', compact('data_pengeluaran'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        $id = Crypt::decrypt($id);
+        $data_pengeluaran = Pengeluaran::Find($id);
+        $data_anggaran = Anggaran::all();
+        $data_warga = DataWarga::all();
+        $data_warga_program = AccessProgram::where('program_id', 1);
+        return view('backend.transaksi.pengeluaran.edit', compact('data_pengeluaran', 'data_anggaran', 'data_warga', 'data_warga_program'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $id = Crypt::decrypt($id);
+        $request->validate(
+            [
+                'pengaju_id' => 'required',
+                'data_warga' => 'required',
+                'anggaran_id' => 'required',
+                'jumlah' => 'required',
+                'keterangan' => 'required',
+                'pengurus_id' => 'required',
+            ],
+            [
+                'pengaju_id.required' => 'Anggota yang nginput kedah di isi',
+                'data_warga.required' => 'Data Warga yang kedah di isi',
+                'anggaran_id.required' => 'Anggaran kedah di isi',
+                'jumlah.required' => 'Nominal kedah di isi',
+                'keterangan.required' => 'Alasan kedah di isi',
+                'pengurus_id.required' => 'Yang menyutujui kedah di isi',
+            ]
+        );
+        $data_anggaran = Anggaran::find($request->anggaran_id);
+
+        $data_pengeluaran = Pengeluaran::find($id);
+        $data_pengeluaran->pengaju_id = $request->pengaju_id;
+        $data_pengeluaran->pengurus_id = $request->pengurus_id;
+        $data_pengeluaran->anggaran_id = $request->anggaran_id;
+        $data_pengeluaran->data_warga_id = $request->data_warga;
+        $data_pengeluaran->jumlah = $request->jumlah;
+        $data_pengeluaran->alasan = $request->keterangan;
+        $data_pengeluaran->ketua = $request->ketua;
+        $data_pengeluaran->sekertaris = $request->sekertaris;
+        $data_pengeluaran->bendahara = $request->bendahara;
+        if ($request->status == true) {
+            $data_pengeluaran->status = $request->status;
+        }
+        if ($request->tanggal == true) {
+            $data_pengeluaran->tanggal = $request->tanggal;
+            $data_pengeluaran->kode = $data_anggaran->kode . date('dmyhis', strtotime($request->tanggal));
+        }
+
+        $data_pengeluaran->update();
+        return redirect()->back()->with('infoes', ' Data Pengeluaran atos di ganti, cek data lagi');
+    }
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $id = Crypt::decrypt($id);
+        $data_pengeluaran = Pengeluaran::find($id);
+
+        $data_pengeluaran->delete();
+
+        return redirect()->back()->with('kuning', 'Data Parantos di hapus tina disimpen dina sampah )');
+    }
+    public function trash()
+    {
+        $data_pengeluaran = Pengeluaran::orderByRaw('created_at DESC')->onlyTrashed()->get();
+
+        return view('backend.transaksi.pengeluaran.trash', compact('data_pengeluaran'));
+    }
+
+    public function restore($id)
+    {
+        $id = Crypt::decrypt($id);
+        $data_pengeluaran = Pengeluaran::withTrashed()->findorfail($id);
+        $data_pengeluaran->restore();
+        return redirect()->back()->with('infoes', 'Data pengeluaran atos di kembalikeun deui tina sampah');
+    }
+
+    public function kill($id)
+    {
+        $id = Crypt::decrypt($id);
+        $data_pengeluaran = Pengeluaran::withTrashed()->findorfail($id);
+
+        $data_pengeluaran->forceDelete();
+        return redirect()->back()->with('kuning', 'Data pengeluaran parantos di hapus dina sampah');
+    }
+}

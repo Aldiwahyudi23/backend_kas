@@ -38,6 +38,7 @@ class KategoriAnggaranProgramController extends Controller
         $data = new KategoriAnggaranProgram;
         $data->nama_kategori = $request->nama_kategori;
         $data->deskripsi = $request->deskripsi;
+        $data->kode = $request->kode;
         $data->save();
 
         return redirect()->back()->with('sukses', 'Horeeeeeee Data kategori atos di simpen, atos masuk kana data');
@@ -87,6 +88,7 @@ class KategoriAnggaranProgramController extends Controller
         $data = KategoriAnggaranProgram::find($id);
         $data->nama_kategori = $request->nama_kategori;
         $data->deskripsi = $request->deskripsi;
+        $data->kode = $request->kode;
 
         $data->update();
         return redirect()->back()->with('infoes', 'yeuhhhhhhh Data kategori atos di geuntos');

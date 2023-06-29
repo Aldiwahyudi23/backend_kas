@@ -14,6 +14,11 @@
                 <td>:</td>
                 <td>{{$kategori->nama_kategori}}</td>
             </tr>
+            <tr>
+                <td>Kode</td>
+                <td>:</td>
+                <td>{{$kategori->kode}}</td>
+            </tr>
         </table>
         <table class="table table-hover table-head-fixed" id='tabelAgendaMasuk'>
             <hr>

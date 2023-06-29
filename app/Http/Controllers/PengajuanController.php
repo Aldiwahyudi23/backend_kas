@@ -6,6 +6,7 @@ use App\Models\Pengajuan;
 use App\Http\Controllers\Controller;
 use App\Models\AccessProgram;
 use App\Models\DataWarga;
+use App\Models\KategoriAnggaranProgram;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -52,9 +53,11 @@ class PengajuanController extends Controller
             $file->move(public_path('/img/bukti'), $nama);
         }
 
+        $data_ketegori = KategoriAnggaranProgram::find($request->kategori_id);
+
         $data_pengajuan = new Pengajuan();
 
-        $data_pengajuan->kode = $request->kode;
+        $data_pengajuan->kode = $data_ketegori->kode . date('dmyhis');
         $data_pengajuan->jumlah = $request->jumlah;
         $data_pengajuan->pembayaran = $request->pembayaran;
         $data_pengajuan->keterangan = $request->keterangan;

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_kategori');
             $table->longText('deskripsi');
+            $table->longText('kode');
             $table->timestamps();
             $table->softDeletes();
         });
