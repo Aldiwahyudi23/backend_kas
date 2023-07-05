@@ -108,7 +108,7 @@
     jumlah_kas.addEventListener("change", stateHandle);
 
     function stateHandle() {
-        if (document.getElementById("jumlah").value <= 49999) {
+        if (document.getElementById("jumlah").value <= 4999) {
             button_kas.disabled = true;
         } else {
             button_kas.disabled = false;

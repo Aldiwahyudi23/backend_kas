@@ -216,7 +216,7 @@ class DataWargaController extends Controller
                             $timeStart = strtotime($data_created_at);
                             $timeEnd = strtotime("$date");
                             // Menambah bulan ini + semua bulan pada tahun sebelumnya
-                            $numBulan = 1 + (date("Y", $timeEnd) - date("Y", $timeStart)) * 12;
+                            $numBulan = (date("Y", $timeEnd) - date("Y", $timeStart)) * 12;
                             // menghitung selisih bulan
                             $numBulan += date("m", $timeEnd) - date("m", $timeStart);
 

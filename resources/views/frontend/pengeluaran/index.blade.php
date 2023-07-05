@@ -25,73 +25,7 @@
                     <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
                         <!-- Form Admin -->
                         @if (Auth::user()->role->nama_role == "Admin")
-                        <center>
-                            <img src="{{asset($layout_pengeluaran->gambar)}}" alt="" width="50%">
-                            <h5 class="text-bold card-header bg-light p-0"> FORM PINJAMAN</h5>
-                        </center>
-                        <form id="basic-form" action="{{Route('pengajuan.store')}}" method="POST" enctype="multipart/form-data" novalidate>
-                            {{csrf_field()}}
-
-                            <div class="form-group row">
-                                <label for="data_warga_id">Nama data_warga</label>
-                                <select id="data_warga_id" name="data_warga_id" class="select2 form-control @error('data_warga_id') is-invalid @enderror">
-                                    @if (old('data_warga_id') == true)
-                                    <option value="{{old('data_warga_id')}}">{{old('nama')}}</option>
-                                    @endif
-                                    <option value="">-- Pilih Data Warga --</option>
-                                    @foreach ($data_warga as $data)
-                                    <option value="{{$data->id}}"> {{$data->nama}}</option>
-                                    @endforeach
-                                </select>
-                                @error('data_warga_id')
-                                <div class="invalid-feedback">
-                                    <strong>{{ $message }}</strong>
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="form-group row">
-                                <label for="jumlah">Nominal</label>
-                                <input type="hidden" name="anggota_id" id="anggota_id" value="{{Auth::id()}}">
-                                <input type="hidden" name="kategori" id="kategori" value="Pinjaman">
-                                <input type="number" id="jumlah" name="jumlah" value="{{ old('jumlah') }}" placeholder="Cont : 50000    jangan pake titik ataupun koma" class="form-control col-12 @error('jumlah') is-invalid @enderror">
-                                @error('jumlah')
-                                <div class="invalid-feedback">
-                                    <strong>{{ $message }}</strong>
-                                </div>
-                                @enderror
-                                <span class="text-dark" style="font-size: 10px">Jatah perorang {{$data_anggaran_max_pinjaman->persen}} % tina jumlah sadayana anggaran pinjaman yaeta {{"Rp" . number_format(1000,2,',','.')}}, teu kengeng ngalebihi.</span>
-                            </div>
-                            <div class="form-group row">
-                                <label for="pembayaran">Metode Pembayaran</label>
-                                <select name="pembayaran" id="pembayaran" class="form-control select2bs4 @error('pembayaran') is-invalid @enderror">
-
-                                    <option value="">--Pilih Pembayaran--</option>
-                                    <option value="Cash">Uang Tunai</option>
-                                    <option value="Transfer">Transfer</option>
-                                </select>
-                                @error('pembayaran')
-                                <div class="invalid-feedback">
-                                    <strong>{{ $message }}</strong>
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="keterangan">Keterangan</label>
-                                <textarea name="keterangan" class="textarea form-control bg-light @error('keterangan') is-invalid @enderror" id="summernote" rows="6" value="{{ old('keterangan') }}">{{ old('keterangan') }}
-                                <p id="keterangann"></p>
-                                </textarea>
-                                @error('keterangan')
-                                <div class="invalid-feedback">
-                                    <strong>{{ $message }}</strong>
-                                </div>
-                                @enderror
-                            </div>
-                            <p id="keterangan"></p>
-                            <hr>
-                            <button onclick="tombol_pinjam()" id="myBtn_pinjam" type="submit" class="btn btn-success btn-sm"><i class="fas fa-save"></i> PINJAM</button>
-                            <div id="tombol_proses"></div>
-                            <span class="text-dark" style="font-size: 10px">Pinjaman di batasi Jatah {{$data_anggaran_max_pinjaman->max_orang}} Orang sesuai anggaran nu aya. <br> Ayeuna nembe aya nu Nambut {{$cek_pengeluaran_pinjaman}} Orang, Masih aya sisa jatah {{$data_anggaran_max_pinjaman->max_orang - $cek_pengeluaran_pinjaman }} Orang deui</span>
-                        </form>
+                        @include('backend.transaksi.pengeluaran.form.pinjaman_admin')
                         @else
                         <!-- Form Anggota -->
                         @if($cek_pengajuan >= 1)
@@ -175,7 +109,7 @@
                                 <tr>
                                     <td>{{$no}}</td>
                                     <td>
-                                        <a href="{{Route('pengeluaran.show',Crypt::encrypt($data->id))}}" class="">
+                                        <a href="{{Route('form.bayar.pinjaman',Crypt::encrypt($data->id))}}" class="">
                                             @if ( $status2->status == 'Lunas')
                                             <i class="btn btn-success "> LUNAS </i>
                                             @elseif ( $status2->status == 'Nunggak')
@@ -221,9 +155,9 @@
                                 ?>
                                 <tr>
                                     <td>{{$no}}</td>
-                                    <td>{{$data->kategori}}</td>
+                                    <td>{{$data->kategori->nama_kategori}}</td>
                                     <td>
-                                        <a href="{{Route('pengajuan.show',Crypt::encrypt($data->id))}} " class="">
+                                        <a href="{{Route('pengajuan.user',Crypt::encrypt($data->id))}} " class="">
                                             @if ( $data->status == 'Proses')
                                             <i class="btn btn-success "> {{ $data->status}} </i>
                                             @else

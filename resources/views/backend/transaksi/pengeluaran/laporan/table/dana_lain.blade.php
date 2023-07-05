@@ -1,0 +1,33 @@
+ <thead>
+     <tr>
+         <th>No</th>
+         <th>ID Transaksi</th>
+         <th>Anggaran</th>
+         <th>Nominal</th>
+         <th>Bulan</th>
+         <th>Ket</th>
+     </tr>
+ </thead>
+ <tbody>
+     <?php $no = 0; ?>
+     @php
+     $total = 0;
+     @endphp
+     @foreach($dana_lain as $data)
+     <?php $no++; ?>
+     <tr>
+         <td>{{$no}}</td>
+         <td>{{$data->kode}}</td>
+         <td>
+             <a href="{{route('laporan.pengeluaran.detail',Crypt::encrypt($data->id))}}">
+                 {{$data->anggaran->nama_anggaran}}
+             </a>
+         </td>
+         <td>{{ "Rp " . number_format($data->jumlah,2,',','.') }}</td>
+         <td>{{date('M-y',strtotime($data->tanggal)) }}</td>
+         <td style="width:100%;"> {!!$data->alasan!!}</td>
+
+     </tr>
+
+     @endforeach
+ </tbody>

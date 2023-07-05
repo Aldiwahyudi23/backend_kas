@@ -1,28 +1,8 @@
 @extends('backend.template_backend.layout')
 
 @section('content')
-<!-- Hanya Akses Admin, bendahara, dan Sekertaris -->
-@if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
-<div class="alert alert-info alert-dismissible fade show" role="alert">
-    <b><i class="fas fa-info"></i> INFO !!!</b> <br>
-    Data anu di handap nyaeta data pemasukan ti anggota anu atos bayar. Supados data lebet kana pendataan kas Punten ka bendahara <b>KONFIRMASI PEMABAYARAN </b> ieu sesuai keterangan anu atos anggota input
-    <br> <br> Tombol<b> KONFORMASI</b> nu di handap Fungsina kanggo ngakomfirmasi bahwa pembayaran eta bener.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-<!-- Kanggo pengeditan Hanya Akses Admin, dan Sekertaris -->
-@if(Auth::user()->role_id == 1 | Auth::user()->role_id == 2)
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Data nu di handap atos leres ?
-    <br> Klik <a href="{{Route('pengajuan.edit',Crypt::encrypt($data_pengajuan->id))}}" type="" class="btn btn-primary btn-sm" onclick="return confirm('Leres bade ngedit data ieu ? , Pengeditan kedah sepengetahuan nu sanes !')">Edit</a> kanggo ngedit data,Jangkauan terbatas .
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-@endif
-<!-- Akses all -->
-@else
+
+
 <div class="alert alert-info alert-dismissible fade show" role="alert">
     <b><i class="fas fa-info"></i> INFO !!!</b> <br>
     Data masih di proses nuju di cek ku pengurus, nuju di<b>KONFIRMASI </b> heula.
@@ -31,7 +11,6 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-@endif
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
@@ -90,22 +69,6 @@
                             @endif
                         </div>
                         <hr>
-                        <form action="{{Route('pemasukan.store')}}" method="post" enctype="multipart/form-data">
-                            {{csrf_field()}}
-                            <button onclick="tombol()" id="myBtn" type="submit" class="btn btn-primary btn-sm"><i class="fas fa-send"></i> KONFIRMASI</button>
-                            <div id="tombol_proses"></div>
-
-                            <input type="hidden" id="pengajuan_id" name="pengajuan_id" value="{{ $data_pengajuan->id }}">
-                            <input type="hidden" id="kode" name="kode" value="{{ $data_pengajuan->kode }}">
-                            <input type="hidden" id="data_warga" name="data_warga" value="{{ $data_pengajuan->data_warga_id }}">
-                            <input type="hidden" id="pengaju_id" name="pengaju_id" value="{{ $data_pengajuan->pengaju_id }}">
-                            <input type="hidden" id="jumlah" name="jumlah" value=" {{ $data_pengajuan->jumlah }}">
-                            <input type="hidden" id="keterangan" name="keterangan" value="{{ $data_pengajuan->keterangan }}">
-                            <input type="hidden" id="tanggal" name="tanggal" value="{{ $data_pengajuan->created_at }}">
-                            <input type="hidden" id="kategori_id" name="kategori_id" value="{{ $data_pengajuan->kategori_id }}">
-                            <input type="hidden" id="pembayaran" name="pembayaran" value="{{ $data_pengajuan->pembayaran }}">
-                            <input type="hidden" id="foto1" name="foto1" value="{{ $data_pengajuan->foto }}">
-                        </form>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,7 @@ use App\Http\Controllers\AccessProgramController;
 use App\Http\Controllers\AccessSubMenuController;
 use App\Http\Controllers\AllRouteUrlController;
 use App\Http\Controllers\AnggaranController;
+use App\Http\Controllers\BayarPinjamanController;
 use App\Http\Controllers\DataWargaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HubunganWargaController;
@@ -121,6 +122,7 @@ Route::get('/pengajuans/pinjam', [PengajuanController::class, 'index_pinjam'])->
 Route::get('/pengajuans/bayar', [PengajuanController::class, 'index_bayar_pinjam'])->middleware(['auth', 'verified'])->name('table-pengajuan-bayar_pinjaman');
 Route::get('/pengajuans/laporan/{id}', [PengajuanController::class, 'laporan_pinjaman'])->middleware(['auth', 'verified'])->name('pengajuan.laporan');
 Route::post('/pengajuans/laporan/{id}', [PengajuanController::class, 'kirim_laporan_pinjaman'])->middleware(['auth', 'verified'])->name('kirim_pengajuan.laporan');
+Route::get('/pengajuans/user/{id}', [PengajuanController::class, 'pengajuan_user'])->middleware(['auth', 'verified'])->name('pengajuan.user');
 
 
 Route::resource('pemasukan', PemasukanController::class)->middleware(['auth', 'verified']);
@@ -128,6 +130,8 @@ Route::get('/pemasukans/trash/', [PemasukanController::class, 'trash'])->middlew
 Route::post('/pemasukans/kill/{id}', [PemasukanController::class, 'kill'])->middleware(['auth', 'verified'])->name('pemasukan.kill');
 Route::get('/pemasukans/restore/{id}', [PemasukanController::class, 'restore'])->middleware(['auth', 'verified'])->name('pemasukan.restore');
 Route::get('/pemasukans/bayar', [PemasukanController::class, 'pemasukan_index'])->middleware(['auth', 'verified'])->name('pemasukan-index');
+Route::get('/pemasukans/detail/kas/{id}', [PemasukanController::class, 'detail_anggota_kas'])->middleware(['auth', 'verified'])->name('detail.anggota.kas');
+Route::get('/pemasukans/detail/tabungan/{id}', [PemasukanController::class, 'detail_anggota_tabungan'])->middleware(['auth', 'verified'])->name('detail.anggota.tabungan');
 
 Route::resource('user', UserController::class)->middleware(['auth', 'verified']);
 Route::resource('layout-halaman-pemasukan', LayoutPemasukanController::class)->middleware(['auth', 'verified']);
@@ -141,6 +145,9 @@ Route::get('/pengeluarans/trash/', [PengeluaranController::class, 'trash'])->mid
 Route::post('/pengeluarans/kill/{id}', [PengeluaranController::class, 'kill'])->middleware(['auth', 'verified'])->name('pengeluaran.kill');
 Route::get('/pengeluarans/restore/{id}', [PengeluaranController::class, 'restore'])->middleware(['auth', 'verified'])->name('pengeluaran.restore');
 Route::get('/pengeluarans/bayar', [PengeluaranController::class, 'pengeluaran_index'])->middleware(['auth', 'verified'])->name('pengeluaran-index');
+Route::get('/pengeluarans/laporan/detail/{id}', [PengeluaranController::class, 'detail_pengeluaran'])->middleware(['auth', 'verified'])->name('laporan.pengeluaran.detail');
+Route::get('/pengeluarans/laporan', [PengeluaranController::class, 'laporan_pengeluaran'])->middleware(['auth', 'verified'])->name('laporan.pengeluaran');
+Route::get('/pengeluarans/input', [PengeluaranController::class, 'input_pengeluaran'])->middleware(['auth', 'verified'])->name('input.pengeluaran');
 
 Route::resource('layout-halaman-pengeluaran', LayoutPengeluaranController::class)->middleware(['auth', 'verified']);
 // Data Anggaran
@@ -148,4 +155,13 @@ Route::resource('anggaran', AnggaranController::class)->middleware(['auth', 'ver
 Route::get('/anggarans/trash/', [AnggaranController::class, 'trash'])->middleware(['auth', 'verified'])->name('anggaran.trash');
 Route::post('/anggarans/kill/{id}', [AnggaranController::class, 'kill'])->middleware(['auth', 'verified'])->name('anggaran.kill');
 Route::get('/anggarans/restore/{id}', [AnggaranController::class, 'restore'])->middleware(['auth', 'verified'])->name('anggaran.restore');
+
+
+Route::resource('pinjaman', BayarPinjamanController::class)->middleware(['auth', 'verified']);
+Route::get('/form/bayar/pinjaman/{id}', [BayarPinjamanController::class, 'form_bayar_pinjaman'])->middleware(['auth', 'verified'])->name('form.bayar.pinjaman'); //tidak di pake
+Route::get('/show/bayar/pinjaman/{id}', [BayarPinjamanController::class, 'lihat_data_bayar'])->middleware(['auth', 'verified'])->name('lihat.data.bayar'); //tidak di pake
+Route::get('/bayar/pinjaman/trash/', [BayarPinjamanController::class, 'trash'])->middleware(['auth', 'verified'])->name('bayar.pinjaman.trash'); //tidak di pake
+Route::post('/bayar/pinjaman/kill/{id}', [BayarPinjamanController::class, 'kill'])->middleware(['auth', 'verified'])->name('bayar.pinjaman.kill'); //tidak di pake
+Route::get('/bayar/pinjaman/restore/{id}', [BayarPinjamanController::class, 'restore'])->middleware(['auth', 'verified'])->name('bayar.pinjaman.restore'); //tidak di pake
+
 require __DIR__ . '/auth.php';

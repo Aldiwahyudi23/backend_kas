@@ -131,19 +131,19 @@
                         <!-- /.table-body -->
                     </div>
                     <div class="tab-pane fade show" id="custom-tabs-one-tabungan" role="tabpanel" aria-labelledby="custom-tabs-one-tabungan-tab">
-                        <table id="table3" class="table table-bordered table-striped table-responsive">
-
-                        </table>
-                        <!-- /.table-body -->
-                    </div>
-                    <div class="tab-pane fade" id="Anggota" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
                         <table id="table4" class="table table-bordered table-striped table-responsive">
 
                         </table>
                         <!-- /.table-body -->
                     </div>
+                    <div class="tab-pane fade" id="Anggota" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
+                        <table id="table2" class="table table-bordered table-striped table-responsive">
+                            @include('frontend.pemasukan.table.perAnggota')
+                        </table>
+                        <!-- /.table-body -->
+                    </div>
                     <div class="tab-pane fade" id="Setor" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
-                        <table id="table5" class="table table-bordered table-striped table-responsive">
+                        <table id="table3" class="table table-bordered table-striped table-responsive">
                             @include('frontend.pemasukan.table.setor_tunai')
                         </table>
                         <!-- /.table-body -->

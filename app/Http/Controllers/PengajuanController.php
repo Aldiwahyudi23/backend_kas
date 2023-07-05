@@ -8,6 +8,7 @@ use App\Models\AccessProgram;
 use App\Models\DataWarga;
 use App\Models\KategoriAnggaranProgram;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -53,6 +54,7 @@ class PengajuanController extends Controller
             $file->move(public_path('/img/bukti'), $nama);
         }
 
+        $tanggal = Carbon::now();
         $data_ketegori = KategoriAnggaranProgram::find($request->kategori_id);
 
         $data_pengajuan = new Pengajuan();
@@ -64,8 +66,18 @@ class PengajuanController extends Controller
         $data_pengajuan->data_warga_id = $request->data_warga;
         $data_pengajuan->pengaju_id = $request->pengaju_id;
         $data_pengajuan->kategori_id = $request->kategori_id;
+        $data_pengajuan->tanggal = $tanggal;
         $data_pengajuan->status = "Proses";
 
+        if ($request->pengeluaran_id) {
+            $data_pengajuan->pengeluaran_id = $request->pengeluaran_id;
+        }
+        if ($request->sekertaris) {
+            $data_pengajuan->sekertaris = $request->sekertaris;
+        }
+        if ($request->bendahara) {
+            $data_pengajuan->bendahara = $request->bendahara;
+        }
         if ($request->foto) {
             $data_pengajuan->foto = "/img/bukti/$nama";
         }
@@ -83,7 +95,7 @@ class PengajuanController extends Controller
         $id = Crypt::decrypt($id);
 
         $data_pengajuan = Pengajuan::Find($id);
-        return view('frontend.pengajuan.show', compact('data_pengajuan'));
+        return view('backend.transaksi.pengajuan.show', compact('data_pengajuan'));
     }
 
     /**
@@ -150,7 +162,7 @@ class PengajuanController extends Controller
     // Pengluaran==================================================================================================
     public function index_tabungan()
     {
-        $data_pengajuan = Pengajuan::orderByRaw('created_at DESC')->where('kategori_id', 3)->get();
+        $data_pengajuan = Pengajuan::orderByRaw('created_at DESC')->where('kategori_id', 2)->get();
 
         return view('frontend.pengajuan.index', compact('data_pengajuan'));
     }
@@ -158,7 +170,7 @@ class PengajuanController extends Controller
     // Pengluaran==================================================================================================
     public function tarik_tabungan()
     {
-        $data_pengajuan = Pengajuan::orderByRaw('created_at DESC')->where('kategori_id', 4)->get();
+        $data_pengajuan = Pengajuan::orderByRaw('created_at DESC')->where('kategori_id', 5)->get();
 
         return view('frontend.pengajuan.index', compact('data_pengajuan'));
     }
@@ -166,7 +178,7 @@ class PengajuanController extends Controller
     // Pinjaman ==================================================================================================
     public function index_pinjam()
     {
-        $data_pengajuan = Pengajuan::orderByRaw('created_at DESC')->where('kategori_id', 2)->get();
+        $data_pengajuan = Pengajuan::orderByRaw('created_at DESC')->where('kategori_id', 4)->get();
 
         return view('frontend.pengajuan.index', compact('data_pengajuan'));
     }
@@ -174,10 +186,17 @@ class PengajuanController extends Controller
     // Bayar Pinjaman =============================================================================================
     public function index_bayar_pinjam()
     {
-        $data_pengajuan = Pengajuan::orderByRaw('created_at DESC')->where('kategori_id', 5)->get();
+        $data_pengajuan = Pengajuan::orderByRaw('created_at DESC')->where('kategori_id', 6)->get();
 
         return view('frontend.pengajuan.index', compact('data_pengajuan'));
     }
     // ------------------------------------------------------------------------------------------------------------
 
+    public function pengajuan_user($id)
+    {
+        $id = Crypt::decrypt($id);
+
+        $data_pengajuan = Pengajuan::Find($id);
+        return view('frontend.pengajuan.show', compact('data_pengajuan'));
+    }
 }

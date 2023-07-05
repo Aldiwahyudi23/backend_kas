@@ -11,6 +11,7 @@ use App\Models\KategoriAnggaranProgram;
 use App\Models\Layout_Pemasukan;
 use App\Models\Pengajuan;
 use App\Models\Program;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -225,7 +226,7 @@ class PemasukanController extends Controller
         $data_warga = DataWarga::all();
         $layout_pemasukan = Layout_Pemasukan::first();
         $data_kategori = KategoriAnggaranProgram::all();
-        $data_pemasukan_kas_user = Pemasukan::orderByRaw('created_at DESC')->where('data_warga_id', Auth::user()->data_warga_id)->get();
+        $data_pemasukan_kas_user = Pemasukan::orderByRaw('created_at DESC')->where('data_warga_id', Auth::user()->data_warga_id)->where('kategori_id', 1)->get();
         $data_pemasukan_semua = Pemasukan::orderByRaw('created_at DESC')->where('kategori_id', '1')->get();
         $data_pemasukan_setor_tunai = Pemasukan::orderByRaw('created_at DESC')->where('kategori_id', '3')->get();
 
@@ -233,6 +234,9 @@ class PemasukanController extends Controller
         $cek_pemasukan_terakhir = Pemasukan::orderByRaw('created_at DESC LIMIT 1')->where('kategori_id', 1)->where('data_warga_id', Auth::user()->data_warga_id)->get();
         $cek_pemasukan_terakhir_total = Pemasukan::orderByRaw('created_at DESC LIMIT 1')->where('kategori_id', 1)->where('data_warga_id', Auth::user()->data_warga_id)->count();
         $cek_pemasukan_terakhir_all = Pemasukan::orderByRaw('created_at DESC')->where('kategori_id', 1)->where('data_warga_id', Auth::user()->data_warga_id)->sum('jumlah');
+
+        // data untuk table data user 
+        $data_anggota = User::all();
 
         return view('frontend.pemasukan.index', compact(
             'access_pemasukan',
@@ -249,7 +253,25 @@ class PemasukanController extends Controller
             'cek_pengajuan',
             'cek_pemasukan_terakhir',
             'cek_pemasukan_terakhir_total',
-            'cek_pemasukan_terakhir_all'
+            'cek_pemasukan_terakhir_all',
+            'data_anggota'
         ));
+    }
+
+    // untuk melihat detail kas perorangan , , pengurus
+    public function detail_anggota_kas($id)
+    {
+        $id = Crypt::decrypt($id);
+        $user = User::find($id);
+        $data_pemasukan_kas_user = Pemasukan::where('kategori_id', 1)->where('data_warga_id', $user->data_warga_id)->orderByRaw('created_at DESC')->get();
+        return view('frontend.pemasukan.show_anggota', compact('data_pemasukan_kas_user', 'user'));
+    }
+    // untuk melihat data tabungan  .  pengurus
+    public function detail_anggota_tabungan($id)
+    {
+        $id = Crypt::decrypt($id);
+        $user = User::find($id);
+        $data_pemasukan_kas_user = Pemasukan::where('kategori_id', 2)->where('data_warga_id', $user->data_warga_id)->orderByRaw('created_at DESC')->get();
+        return view('frontend.pemasukan.show_anggota', compact('data_pemasukan_kas_user', 'user'));
     }
 }

@@ -5,11 +5,14 @@
 <?php
 // mengambil tanggal ysng di resmikan pada table prograam
 
+use App\Models\DataWarga;
 use App\Models\Program;
 use App\Models\UpdateKerja;
 use Illuminate\Support\Facades\Auth;
 
+$data_user = DataWarga::find(Auth::user()->data_warga_id);
 $program = Program::find(1); //find id 1 adalah mengambil id dari data program dengan id 1 ya itu kas keluarga
+$setor = $program->jumlah - 1;
 
 // mengambil data selisih yang tidak bekerja 
 $update_kerja = UpdateKerja::where('user_id', Auth::user()->id)->sum('tenor');
@@ -40,9 +43,20 @@ $sisa_bulan = $sisa_kas / $program->jumlah;
     <tbody>
         @foreach ($cek_pemasukan_terakhir as $data)
         <tr>
-            <td>Pembayaran terakhir {{$update_kerja}} <b> {{$data->data_warga->nama}} </b> di Bulan <b> {{date('M-y',strtotime($data->tanggal)) }} </b> <br> <br>
-                @if($sisa_kas <= 0) luarrr biasa TUNTAS sadayana atos bayar ti awal sampe ayeuna bulan {{date("M-Y",$timeEnd)}}, NUHUN. Alhamdulilah Ayeuna teh nuju jalan bulan ka {{$numBulan}} <br>
-                    <a href="#demo" class="btn btn-info" data-toggle="collapse">Pami bade bayar deui, Klik wae atuh supados muncul</a> @else sareng Aya <b>{{ "Rp " . number_format($sisa_kas,2,',','.') }}</b> atawa <b>{{$sisa_bulan}}</b> Bulanan nu teu acan di bayar Mangga cek wae dina story pembayaran di handap <br> Kas mulaina ti bulan {{date("M-Y",$timeStart)}}
+            <td>Pembayaran terakhir <b> {{$data->data_warga->nama}} </b> di Bulan <b> {{date('M-y',strtotime($data->tanggal)) }} </b> <br> <br>
+                @if($data_user->status == "Tidak Bekerja")
+                Status Pekerjaan Akun Tidak Bekerja, jadi jika kalau emang status nya tidak bekerja maka tidak diwajibkan untuk bayar namun jika mau bayar bisa klik aja tombol di bawah <br> masa tidak bekerja {{$update_kerja}}, NUHUN. <br> Alhamdulilah Ayeuna teh nuju jalan bulan ka {{$numBulan}} <br>
+                <a href="#demo" class="btn btn-info" data-toggle="collapse">Pami bade bayar, Klik wae atuh supados muncul</a>
+                <!-- dab jika tida -->
+                @else
+                @if( $sisa_kas <= 0) <!-- Jika sisa kas yang harus di bayar kas kosong -->
+                    luarrr biasa TUNTAS sadayana atos bayar ti awal sampe ayeuna bulan {{date("M-Y",$timeEnd)}} kapotong ku masa Tidak Bekerja selami <b>{{$update_kerja}}</b>, NUHUN. Alhamdulilah Ayeuna teh nuju jalan bulan ka {{$numBulan}} <br>
+                    <a href="#demo" class="btn btn-info" data-toggle="collapse">Pami bade bayar deui, Klik wae atuh supados muncul</a>
+                    <!-- dab jika tida -->
+                    @else
+                    sareng Aya <b>{{ "Rp " . number_format($sisa_kas,2,',','.') }}</b> atawa <b>{{$sisa_bulan}}</b> Bulanan nu teu acan di bayar kapotong ku masa Tidak Bekerja selami <b>{{$update_kerja}}</b> , Mangga cek wae dina story pembayaran di handap <br> Kas mulaina ti bulan {{date("M-Y",$timeStart)}}
+
+                    @endif
                     @endif
             </td>
         </tr>
@@ -62,7 +76,8 @@ $sisa_bulan = $sisa_kas / $program->jumlah;
 </div>
 @endif
 
-@if($sisa_kas <= 0) <div id="demo" class="collapse">
+
+@if($data_user->status == "Tidak Bekerja" || $sisa_kas <= 0) <div id="demo" class="collapse">
     @else
     <div class="">
         @endif
@@ -144,7 +159,7 @@ $sisa_bulan = $sisa_kas / $program->jumlah;
         jumlah_kas.addEventListener("change", stateHandle);
 
         function stateHandle() {
-            if (document.getElementById("jumlah").value <= 49999) {
+            if (document.getElementById("jumlah").value <= <?php echo $setor ?>) {
                 button_kas.disabled = true;
             } else {
                 button_kas.disabled = false;

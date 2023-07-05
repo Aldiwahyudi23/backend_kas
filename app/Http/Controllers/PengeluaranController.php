@@ -87,7 +87,7 @@ class PengeluaranController extends Controller
             $data_pengeluaran->kode =  $data_anggaran->kode . date('dmyhis', strtotime($request->tanggal));
         } else {
             $data_pengeluaran->pengurus_id = Auth::user()->data_warga_id;
-            $data_pengeluaran->kode = $request->kode; //jika kode ini di ambil dari pengajuan maka ngambil dari sini
+            $data_pengeluaran->kode =  $data_anggaran->kode . date('dmyhis', strtotime($request->tanggal)); //jika kode ini di ambil dari pengajuan maka ngambil dari sini
         }
 
         $data_pengeluaran->save();
@@ -212,13 +212,14 @@ class PengeluaranController extends Controller
 
     public function pengeluaran_index()
     {
+
         $data_user = User::all();
-        $data_pengeluaran_pinjaman = Pengeluaran::where('data_warga_id', Auth::user()->data_warga_id)->where('anggaran_id', 3); //mengambil data pinjaman user
+        $data_pengeluaran_pinjaman = Pengeluaran::where('pengaju_id', Auth::user()->data_warga_id)->where('anggaran_id', 3); //mengambil data pinjaman user
         $data_hubungan = HubunganWarga::where('warga_id', Auth::user()->data_warga_id)->get(); //mengambil data hubungan dengan anggota
         $data_warga = DataWarga::all(); //mengambil data data warga
 
-        $cek_pengajuan = Pengajuan::where('data_warga_id', Auth::user()->data_warga_id)->where('kategori_id', 3)->count();
-        $cek_pengajuan_proses = Pengajuan::where('data_warga_id', Auth::user()->data_warga_id)->get();
+        $cek_pengajuan = Pengajuan::where('data_warga_id', Auth::user()->data_warga_id)->where('kategori_id', 4)->count();
+        $cek_pengajuan_proses = Pengajuan::where('pengaju_id', Auth::user()->data_warga_id)->get();
 
         $cek_pengeluaran_pinjaman = Pengeluaran::where('anggaran_id', 3)->where('status', 'Nunggak')->count(); //mengecek apakah pinjaman yang masih nunggak sudah melebihi batas yang telah di tentukan
         $cek_pengeluaran_pinjaman_user = Pengeluaran::where('anggaran_id', 3)->where('data_warga_id', Auth::user()->data_warga_id)->where('status', 'Nunggak')->count(); //mengecek pinjaman apakah sudah lunas atau masih nunggak
@@ -244,5 +245,32 @@ class PengeluaranController extends Controller
             'layout_pengeluaran',
             'cek_total_pinjaman'
         ));
+    }
+
+    public function laporan_pengeluaran()
+    {
+        $dana_darurat = Pengeluaran::orderByRaw('created_at DESC')->where('anggaran_id', 1)->get();
+        $dana_amal = Pengeluaran::orderByRaw('created_at DESC')->where('anggaran_id', 2)->get();
+        $dana_pinjam = Pengeluaran::orderByRaw('created_at DESC')->where('anggaran_id', 3)->get();
+        $dana_usaha = Pengeluaran::orderByRaw('created_at DESC')->where('anggaran_id', 4)->get();
+        $dana_acara = Pengeluaran::orderByRaw('created_at DESC')->where('anggaran_id', 5)->get();
+        $dana_lain = Pengeluaran::orderByRaw('created_at DESC')->where('anggaran_id', 6)->get();
+
+        return view('frontend.pengeluaran.laporan.index', compact('dana_darurat', 'dana_amal', 'dana_pinjam', 'dana_usaha', 'dana_acara', 'dana_lain'));
+    }
+
+    public function detail_pengeluaran($id)
+    {
+        $id = Crypt::decrypt($id);
+
+        $data_pengeluaran = Pengeluaran::Find($id);
+        return view('frontend.pengeluaran.laporan.show', compact('data_pengeluaran'));
+    }
+
+    public function input_pengeluaran()
+    {
+        $data_anggaran = Anggaran::all();
+
+        return view('frontend.pengeluaran.input_laporan', compact('data_anggaran'));
     }
 }
