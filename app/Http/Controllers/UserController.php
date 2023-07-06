@@ -41,6 +41,7 @@ class UserController extends Controller
                 'password' => 'required',
                 'role_id' => 'required',
                 'data_warga_id' => 'required',
+
             ],
             [
                 'nama.required' => 'Nama Kedah di isin',

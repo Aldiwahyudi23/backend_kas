@@ -157,16 +157,31 @@
                  <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
              </div>
          </li>
-         <li class="nav-item">
-             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                 <i class="fas fa-expand-arrows-alt"></i>
+         <?php
+
+            use Illuminate\Support\Facades\DB;
+            use App\Models\Pengeluaran;
+
+            $program_tabungan = AccessProgram::where('user_id', Auth::user()->id)->where('program_id', 2)->count();
+
+            $tabungan = DB::table('pemasukans')->where('pemasukans.kategori_id', '=', "2");
+            $total_tabungan = $tabungan->where('pemasukans.data_warga_id', '=', Auth::user()->data_warga_id)
+                ->sum('pemasukans.jumlah');
+            $pengeluaran_tabungan = Pengeluaran::where('data_warga_id', Auth::user()->data_warga_id)->where('anggaran_id', 7)->sum('jumlah');
+            ?>
+         @if ($program_tabungan == 1)
+         <li class="nav-item dropdown">
+             <a href="{{route('tabungan_user',Crypt::encrypt('Auth::user()->data_warga_id'))}}" class="nav-link" style="color: #fff">
+                 </i> &nbsp; {{ "Rp " . number_format($total_tabungan-$pengeluaran_tabungan,2,',','.') }}
              </a>
          </li>
+         @else
          <li class="nav-item">
-             <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                 <i class="fas fa-th-large"></i>
+             <a class="nav-link" href="#">
+                 {{Auth::user()->name}}
              </a>
          </li>
+         @endif
      </ul>
  </nav>
  <!-- /.navbar -->

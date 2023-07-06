@@ -25,6 +25,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubMenuController;
+use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\UserController;
 use App\Models\Access_Pemasukan;
 use App\Models\AccessProgram;
@@ -180,5 +181,9 @@ Route::get('/bantuans/login/{id}', [BantuanController::class, 'login'])->name('b
 Route::resource('laporan-saldo', LaporanSaldoController::class)->middleware(['auth', 'verified']);
 Route::get('/laporan-saldos/umum/', [LaporanSaldoController::class, 'laporan_saldo'])->middleware(['auth', 'verified'])->name('laporan_umum');
 Route::get('/laporan-saldos/admin/', [LaporanSaldoController::class, 'laporan_saldo_admin'])->middleware(['auth', 'verified'])->name('laporan_admin');
+
+Route::resource('tabungan', TabunganController::class)->middleware(['auth', 'verified']);
+Route::get('tabungans/{id}', [TabunganController::class, 'tabungan_user'])->middleware(['auth', 'verified'])->name('tabungan_user');
+Route::get('simulasi-kredit/', [HomeController::class, 'simulasi_kredit'])->middleware(['auth', 'verified'])->name('simulasi_kredit');
 
 require __DIR__ . '/auth.php';

@@ -20,7 +20,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-footer text-center">
-                <a href="javascript:">
+                <a href="{{route('laporan_umum')}}">
                     <h3>Rp. 4.0000,000</h3>
                 </a>
             </div>
@@ -50,8 +50,8 @@
                             @if ($data->sub_menu->is_active == 1)
                             <li>
                                 <a class="users-list-name" href="{{Route($data->sub_menu->route_url->route_name)}}">
-                                    <div class="info-box mb-3">
-                                        <span class="info-box-icon bg-success elevation-1"><i class="{{$data->sub_menu->icon}}"></i></span>
+                                    <div class="info-box ">
+                                        <span class="info-box-icon bg-success "><i class="{{$data->sub_menu->icon}}"></i></span>
                                     </div>
                                     <span class="text-bold users-list-date" style="font-size:14px;">{{$data->sub_menu->nama}}</span>
                                 </a>
@@ -149,7 +149,7 @@
                                     </a>
                                 </div>
                                 <div class="product-info">
-                                    <a href="{{route('profile.user',Crypt::encrypt($user_login->id))}}" class="product-title">{{$user_login->name}} </a>
+                                    <a href="" class="product-title">{{$user_login->name}} </a>
                                     @if(Cache::has('user-is-online-' .$user_login->id))
                                     <span class="text-success badge float-right">Online</span>
                                     @else

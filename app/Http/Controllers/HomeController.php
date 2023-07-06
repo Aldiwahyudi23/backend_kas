@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\AccessMenu;
 use App\Models\AccessSubMenu;
 use App\Models\LayoutAppUser;
@@ -63,5 +64,10 @@ class HomeController extends Controller
         $data_layout_app = LayoutAppUser::where('user_id', Auth::user()->id)->first();
 
         return view('frontend.setting.index', compact('data_layout_app', 'title'));
+    }
+
+    public function simulasi_kredit()
+    {
+        return view('kredit.index');
     }
 }
