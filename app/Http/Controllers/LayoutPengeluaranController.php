@@ -72,6 +72,7 @@ class LayoutPengeluaranController extends Controller
         $data->info_saldo = $request->info_saldo;
         $data->info_nunggak = $request->info_nunggak;
         $data->temp_keterangan = $request->temp_keterangan;
+        $data->info_proses_bayar = $request->info_proses_bayar;
         $data->info_full = $request->info_full;
 
         if ($request->gambar) {

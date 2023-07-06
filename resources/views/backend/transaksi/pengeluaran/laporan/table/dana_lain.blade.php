@@ -5,7 +5,6 @@
          <th>Anggaran</th>
          <th>Nominal</th>
          <th>Bulan</th>
-         <th>Ket</th>
      </tr>
  </thead>
  <tbody>
@@ -25,7 +24,6 @@
          </td>
          <td>{{ "Rp " . number_format($data->jumlah,2,',','.') }}</td>
          <td>{{date('M-y',strtotime($data->tanggal)) }}</td>
-         <td style="width:100%;"> {!!$data->alasan!!}</td>
 
      </tr>
 

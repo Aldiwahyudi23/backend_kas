@@ -10,6 +10,7 @@ use App\Models\HubunganWarga;
 use App\Models\LayoutAppUser;
 use App\Models\UpdateKerja;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -353,5 +354,33 @@ class DataWargaController extends Controller
 
         $data_warga->forceDelete();
         return redirect()->back()->with('kuning', 'Data data warga parantos di hapus dina sampah');
+    }
+
+    public function cari_keluarga(Request $request)
+    {
+
+        $cari = $request->cari;
+
+        $data_keluarga = DataWarga::where('nama', 'like', "%" . $cari . "%")->paginate();
+
+
+        return view('frontend.cari_keluarga.detail', compact('data_keluarga'));
+    }
+
+    public function data_warga_detail($id)
+    {
+        $id = Crypt::decrypt($id);
+        $data_anggota = DataWarga::find($id);
+        $foto = FotoUser::where('data_warga_id', $data_anggota->id)->get();
+
+        $data_keluarga_hubungan = HubunganWarga::where('warga_id', $id)->get();
+        $data_keluarga = DataWarga::all();
+
+        $lahir    = new DateTime($data_anggota->tanggal_lahir);
+        $today        = new DateTime();
+        $umurr = $today->diff($lahir);
+
+
+        return view('frontend.cari_keluarga.index', compact('umurr', 'foto', 'data_keluarga', 'data_anggota', 'data_keluarga_hubungan'));
     }
 }

@@ -1,6 +1,28 @@
 @extends('backend.template_backend.layout')
 
 @section('content')
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">SALDO PINJAMAN</h3>
+
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-footer text-center">
+        <a href="javascript:">
+            <h3>Rp. 4.0000,000</h3>
+        </a>
+    </div>
+    <!-- /.card-footer -->
+</div>
 <!-- ./row -->
 <div class="row">
     <div class="col-12 col-sm-6">
@@ -13,11 +35,6 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Deskripsi</a>
                     </li>
-                    @if(Auth::user()->role == "Admin" || Auth::user()->role == "Sekertaris")
-                    <li class="nav-item">
-                        <a href="{{Route('pengeluaran.create')}}" class="nav-link" id="custom-tabs-four-messages-tab">PENGELUARAN</a>
-                    </li>
-                    @endif
                 </ul>
             </div>
             <div class="card-body">

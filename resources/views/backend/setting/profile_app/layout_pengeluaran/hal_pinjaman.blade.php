@@ -88,6 +88,15 @@
                         </div>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <label for="info_proses_bayar">Info Proses Bayar Pinjaman</label>
+                        <textarea name="info_proses_bayar" class="textarea form-control bg-light @error('info_proses_bayar') is-invalid @enderror" id="summernote5" rows="6" value="{{ old('info_proses_bayar') }}">{{ old('info_proses_bayar',$layout_pengeluaran->info_proses_bayar) }}</textarea>
+                        @error('info_proses_bayar')
+                        <div class="invalid-feedback">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                        @enderror
+                    </div>
                     <hr>
                     <button onclick="tombol()" id="myBtn" type="submit" class="btn btn-success btn-sm"><i class="fas fa-save"></i> EDIT</button>
                     <div id="tombol_proses"></div>

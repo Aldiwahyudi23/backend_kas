@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AccessProgram;
 use App\Models\DataWarga;
 use App\Models\KategoriAnggaranProgram;
+use App\Models\LayoutPengeluaran;
 use App\Models\Pengajuan;
 use App\Models\Pengeluaran;
 use App\Models\User;
@@ -27,6 +28,8 @@ class BayarPinjamanController extends Controller
         $data_warga_program = AccessProgram::where('program_id', 1);
         $data_kategori = KategoriAnggaranProgram::all();
         $data_pinjaman = Pengeluaran::where('anggaran_id', 3)->where('status', "Nunggak");
+
+
 
 
         return view('backend.transaksi.bayar_pinjaman.index', compact('data_bayar_pinjaman', 'data_warga_program', 'data_kategori', 'data_pinjaman'));
@@ -214,6 +217,7 @@ class BayarPinjamanController extends Controller
 
         $cek_pengajuan = Pengajuan::where('kategori_id', '6')->where('data_warga_id', Auth::user()->data_warga_id)->count();
 
+        $layout_pengeluaran = LayoutPengeluaran::first(); //Mengambil Layout data pengeluaran untuk batar pinjam
 
 
         $bayar_pinjam = BayarPinjaman::where('pengeluaran_id', $id)->get();
@@ -221,7 +225,15 @@ class BayarPinjamanController extends Controller
 
         $data_pinjaman = Pengeluaran::find($id);
 
-        return view('frontend.pemasukan.bayar_pinjaman.form_bayar_pinjam', compact('data_pinjaman', 'data_setor', 'data_data_warga', 'bayar_pinjam', 'total_bayar_pinjam', 'cek_pengajuan'));
+        return view('frontend.pemasukan.bayar_pinjaman.form_bayar_pinjam', compact(
+            'data_pinjaman',
+            'data_setor',
+            'data_data_warga',
+            'bayar_pinjam',
+            'total_bayar_pinjam',
+            'cek_pengajuan',
+            'layout_pengeluaran'
+        ));
     }
     public function lihat_data_bayar($id)
     {

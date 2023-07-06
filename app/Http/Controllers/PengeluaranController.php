@@ -9,6 +9,7 @@ use App\Models\Anggaran;
 use App\Models\DataWarga;
 use App\Models\HubunganWarga;
 use App\Models\LayoutPengeluaran;
+use App\Models\Pemasukan;
 use App\Models\Pengajuan;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -255,8 +256,9 @@ class PengeluaranController extends Controller
         $dana_usaha = Pengeluaran::orderByRaw('created_at DESC')->where('anggaran_id', 4)->get();
         $dana_acara = Pengeluaran::orderByRaw('created_at DESC')->where('anggaran_id', 5)->get();
         $dana_lain = Pengeluaran::orderByRaw('created_at DESC')->where('anggaran_id', 6)->get();
+        $data_pemasukan = Pemasukan::orderByRaw('created_at DESC')->where('kategori_id', 1)->get();
 
-        return view('frontend.pengeluaran.laporan.index', compact('dana_darurat', 'dana_amal', 'dana_pinjam', 'dana_usaha', 'dana_acara', 'dana_lain'));
+        return view('frontend.pengeluaran.laporan.index', compact('dana_darurat', 'dana_amal', 'dana_pinjam', 'dana_usaha', 'dana_acara', 'dana_lain', 'data_pemasukan'));
     }
 
     public function detail_pengeluaran($id)

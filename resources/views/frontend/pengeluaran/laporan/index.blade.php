@@ -7,7 +7,10 @@
             <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
 
                 <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-one-lain-tab" data-toggle="pill" href="#custom-tabs-one-lain" role="tab" aria-controls="custom-tabs-one-lain" aria-selected="true">Lain"</a>
+                    <a class="nav-link active" id="custom-tabs-one-kas-tab" data-toggle="pill" href="#custom-tabs-one-kas" role="tab" aria-controls="custom-tabs-one-kas" aria-selected="true">Pemasukan</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-one-lain-tab" data-toggle="pill" href="#custom-tabs-one-lain" role="tab" aria-controls="custom-tabs-one-lain" aria-selected="true">Lain-Lain</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " id="custom-tabs-one-darurat-tab" data-toggle="pill" href="#custom-tabs-one-darurat" role="tab" aria-controls="custom-tabs-one-darurat" aria-selected="false">Darurat</a>
@@ -18,12 +21,21 @@
                 <li class="nav-item">
                     <a class="nav-link " id="custom-tabs-one-amal-tab" data-toggle="pill" href="#custom-tabs-one-amal" role="tab" aria-controls="custom-tabs-one-amal" aria-selected="false">Amal</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link " id="custom-tabs-one-pinjam-tab" data-toggle="pill" href="#custom-tabs-one-pinjam" role="tab" aria-controls="custom-tabs-one-pinjam" aria-selected="false">Pinjaman</a>
+                </li>
             </ul>
         </div>
         <div class="card-body">
             <div class="tab-content" id="custom-tabs-one-tabContent">
 
-                <div class="tab-pane fade show active" id="custom-tabs-one-lain" role="tabpanel" aria-labelledby="custom-tabs-one-lain-tab">
+                <div class="tab-pane fade show active" id="custom-tabs-one-kas" role="tabpanel" aria-labelledby="custom-tabs-one-kas-tab">
+                    <table id="table1" class="table table-bordered table-striped table-responsive">
+                        @include('backend.transaksi.pemasukan.laporan.table.data_pemasukan')
+                    </table>
+                    <!-- /.table-body -->
+                </div>
+                <div class="tab-pane fade show" id="custom-tabs-one-lain" role="tabpanel" aria-labelledby="custom-tabs-one-lain-tab">
                     <table id="table1" class="table table-bordered table-striped table-responsive">
                         @include('backend.transaksi.pengeluaran.laporan.table.dana_lain')
                     </table>
@@ -44,6 +56,12 @@
                 <div class="tab-pane fade show" id="custom-tabs-one-amal" role="tabpanel" aria-labelledby="custom-tabs-one-amal-tab">
                     <table id="table4" class="table table-bordered table-striped table-responsive">
                         @include('backend.transaksi.pengeluaran.laporan.table.dana_amal')
+                    </table>
+                    <!-- /.table-body -->
+                </div>
+                <div class="tab-pane fade show" id="custom-tabs-one-pinjam" role="tabpanel" aria-labelledby="custom-tabs-one-pinjam-tab">
+                    <table id="example1" class="table table-bordered table-striped table-responsive">
+                        @include('backend.transaksi.pengeluaran.laporan.table.data_pinjaman_umum')
                     </table>
                     <!-- /.table-body -->
                 </div>

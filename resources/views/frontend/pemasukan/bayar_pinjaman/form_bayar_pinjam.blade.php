@@ -186,13 +186,7 @@
                         @else
 
                         <body class="justify-content-center">
-                            <center>
-                                <h3><b> HALLOOOO.....</b></h3>
-                                <h3>Pembayaran Pinjaman Nuju di Proses</h3>
-                                <img src="https://c.tenor.com/Z8ezUHZzcLoAAAAC/love.gif" alt="" width="50%">
-                                <h3>Hatur Nuhun Atas kerja Samana, Bismillah sukses</h3>
-                                <h5>Harappp di antos dicek ka bendahara sareng sekertaris </h5>
-                            </center>
+                            {!!$layout_pengeluaran->info_proses_bayar!!}
                         </body>
                         @endif
                         @endif

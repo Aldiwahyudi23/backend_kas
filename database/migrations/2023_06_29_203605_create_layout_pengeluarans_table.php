@@ -21,6 +21,7 @@ return new class extends Migration
             $table->longText('info_nunggak');
             $table->longText('info_saldo');
             $table->longText('temp_keterangan');
+            $table->longText('info_proses_bayar');
             $table->timestamps();
         });
     }

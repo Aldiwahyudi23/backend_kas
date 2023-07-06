@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('is_active', ['1', '0']);
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('last_seen');
         });
     }
 

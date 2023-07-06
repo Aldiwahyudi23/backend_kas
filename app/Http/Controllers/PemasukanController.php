@@ -9,6 +9,7 @@ use App\Models\AccessProgram;
 use App\Models\DataWarga;
 use App\Models\KategoriAnggaranProgram;
 use App\Models\Layout_Pemasukan;
+use App\Models\LayoutPengeluaran;
 use App\Models\Pengajuan;
 use App\Models\Program;
 use App\Models\User;
@@ -254,7 +255,7 @@ class PemasukanController extends Controller
             'cek_pemasukan_terakhir',
             'cek_pemasukan_terakhir_total',
             'cek_pemasukan_terakhir_all',
-            'data_anggota'
+            'data_anggota',
         ));
     }
 

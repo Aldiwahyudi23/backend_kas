@@ -5,11 +5,13 @@ use App\Http\Controllers\AccessProgramController;
 use App\Http\Controllers\AccessSubMenuController;
 use App\Http\Controllers\AllRouteUrlController;
 use App\Http\Controllers\AnggaranController;
+use App\Http\Controllers\BantuanController;
 use App\Http\Controllers\BayarPinjamanController;
 use App\Http\Controllers\DataWargaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HubunganWargaController;
 use App\Http\Controllers\KategoriAnggaranProgramController;
+use App\Http\Controllers\LaporanSaldoController;
 use App\Http\Controllers\LayoutAppUserController;
 use App\Http\Controllers\LayoutPemasukanController;
 use App\Http\Controllers\LayoutPengeluaranController;
@@ -100,6 +102,8 @@ Route::POST('/data/warga/cek-akun/', [DataWargaController::class, 'store_user'])
 Route::get('/data/warga/trash/', [DataWargaController::class, 'trash'])->middleware(['auth', 'verified'])->name('data-warga.trash');
 Route::post('/data/warga/kill/{id}', [DataWargaController::class, 'kill'])->middleware(['auth', 'verified'])->name('data-warga.kill');
 Route::get('/data/warga/restore/{id}', [DataWargaController::class, 'restore'])->middleware(['auth', 'verified'])->name('data-warga.restore');
+Route::get('/data/cari/', [DataWargaController::class, 'cari_keluarga'])->name('cari');
+Route::get('/data/detail/{id}', [DataWargaController::class, 'data_warga_detail'])->name('data_warga_detail');
 
 Route::resource('profile-user', ProfileController::class)->middleware(['auth', 'verified']);
 Route::get('/pengaturan/email', [ProfileController::class, 'edit_email'])->middleware(['auth'])->name('pengaturan.email');
@@ -163,5 +167,18 @@ Route::get('/show/bayar/pinjaman/{id}', [BayarPinjamanController::class, 'lihat_
 Route::get('/bayar/pinjaman/trash/', [BayarPinjamanController::class, 'trash'])->middleware(['auth', 'verified'])->name('bayar.pinjaman.trash'); //tidak di pake
 Route::post('/bayar/pinjaman/kill/{id}', [BayarPinjamanController::class, 'kill'])->middleware(['auth', 'verified'])->name('bayar.pinjaman.kill'); //tidak di pake
 Route::get('/bayar/pinjaman/restore/{id}', [BayarPinjamanController::class, 'restore'])->middleware(['auth', 'verified'])->name('bayar.pinjaman.restore'); //tidak di pake
+
+//DATA bantuan
+Route::resource('bantuan', BantuanController::class)->middleware(['auth', 'verified']);
+Route::get('/bantuans/trash/', [BantuanController::class, 'trash'])->middleware(['auth', 'verified', 'checkRole:1'])->name('bantuan.trash');
+Route::post('/bantuans/kill/{id}', [BantuanController::class, 'kill'])->middleware(['auth', 'verified', 'checkRole:1'])->name('bantuan.kill');
+Route::get('/bantuans/restore/{id}', [BantuanController::class, 'restore'])->middleware(['auth', 'verified', 'checkRole:1'])->name('bantuan.restore');
+Route::get('/bantuans/detail/', [BantuanController::class, 'bantuan_index'])->middleware(['auth'])->name('bantuan_umum');
+Route::get('/bantuans/detail/{id}', [BantuanController::class, 'bantuan'])->middleware(['auth'])->name('bantuan.detail');
+Route::get('/bantuans/login/{id}', [BantuanController::class, 'login'])->name('bantuan.login');
+
+Route::resource('laporan-saldo', LaporanSaldoController::class)->middleware(['auth', 'verified']);
+Route::get('/laporan-saldos/umum/', [LaporanSaldoController::class, 'laporan_saldo'])->middleware(['auth', 'verified'])->name('laporan_umum');
+Route::get('/laporan-saldos/admin/', [LaporanSaldoController::class, 'laporan_saldo_admin'])->middleware(['auth', 'verified'])->name('laporan_admin');
 
 require __DIR__ . '/auth.php';
