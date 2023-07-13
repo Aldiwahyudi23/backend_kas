@@ -29,7 +29,7 @@
                     <div class="col-md-6">
                         <ul class="products-list product-list-in-card pl-1 pr-1">
                             <b> <a href="" class="product-title">Saldo Kas</a>
-                                <h4>{{"Rp" . number_format( $saldo_kas + $total_bayar_pinjaman_lebih,2,',','.')}}</h4>
+                                <h4>{{"Rp" . number_format(  $saldo_kas + $total_bayar_pinjaman_lebih-($total_pengeluaran_pinjaman - $total_bayar_pinjaman_semua) ,2,',','.')}}</h4>
                                 <p> Jumlah Total saldo anu aya di bendahara atawa sisa tina pengeluaran termasuk data pinjaman. </p>
                                 <hr />
                             </b>

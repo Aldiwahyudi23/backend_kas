@@ -21,7 +21,7 @@
             <!-- /.card-header -->
             <div class="card-footer text-center">
                 <a href="{{route('laporan_umum')}}">
-                    <h3>Rp. 4.0000,000</h3>
+                    <h3>{{"Rp" . number_format(  $saldo_kas + $total_bayar_pinjaman_lebih-($total_pengeluaran_pinjaman - $total_bayar_pinjaman_semua) ,2,',','.')}}</h3>
                 </a>
             </div>
             <!-- /.card-footer -->
