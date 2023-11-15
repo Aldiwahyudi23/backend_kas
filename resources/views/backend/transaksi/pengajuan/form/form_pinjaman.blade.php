@@ -34,7 +34,7 @@
                <strong>{{ $message }}</strong>
            </div>
            @enderror
-           <span class="text-dark" style="font-size: 10px">Jatah perorang {{$data_anggaran_max_pinjaman->persen}} % tina jumlah sadayana anggaran pinjaman yaeta {{"Rp" . number_format(1000,2,',','.')}}, teu kengeng ngalebihi.</span>
+           <span class="text-dark" style="font-size: 10px">Jatah perorang {{$data_anggaran_max_pinjaman->persen}} % tina jumlah sadayana anggaran pinjaman yaeta {{"Rp" . number_format($jatah,2,',','.')}}, teu kengeng ngalebihi.</span>
        </div>
        <div class="form-group">
            <label for="pembayaran">Metode Pembayaran</label>

@@ -142,10 +142,11 @@ class DataWargaController extends Controller
         $data_warga_all = DataWarga::all();
         $data_akun = User::where('data_warga_id', $id)->first();
         $foto = FotoUser::where('data_warga_id', $id)->where('is_active', 1)->first();
+        $kerja = UpdateKerja::orderByRaw('created_at DESC')->where('user_id', $data_akun->id)->get();
 
         $cek_data_hubungan = HubunganWarga::where('warga_id', $id)->get();
 
-        return view('backend.master_data.data_warga.show', compact('data_warga', 'data_akun', 'foto', 'cek_data_hubungan', 'data_warga_all')); //tidak aktive
+        return view('backend.master_data.data_warga.show', compact('data_warga', 'data_akun', 'foto', 'cek_data_hubungan', 'data_warga_all', 'kerja')); //tidak aktive
     }
 
     /**

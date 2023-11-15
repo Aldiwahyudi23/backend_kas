@@ -175,6 +175,8 @@ class ProfileController extends Controller
 
         $foto_user = FotoUser::where('is-active', 1);
 
+
+
         return view('profile.edit_data', compact(
             'data_pribadi',
             'cek_data_ayah',

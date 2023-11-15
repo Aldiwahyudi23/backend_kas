@@ -279,13 +279,18 @@ class PengeluaranController extends Controller
 
         $cek_pengeluaran_pinjaman = Pengeluaran::where('anggaran_id', 3)->where('status', 'Nunggak')->count(); //mengecek apakah pinjaman yang masih nunggak sudah melebihi batas yang telah di tentukan
         $cek_pengeluaran_pinjaman_user = Pengeluaran::where('anggaran_id', 3)->where('data_warga_id', Auth::user()->data_warga_id)->where('status', 'Nunggak')->count(); //mengecek pinjaman apakah sudah lunas atau masih nunggak
+
         // Data Anggaran
         $data_anggaran = Anggaran::all();
         $data_anggaran_max_pinjaman = Anggaran::find(3);
+        $cek_semua_pemasukan = Pemasukan::where('kategori_id', 1)->sum('jumlah');
+        $cek_pemasukan_2 = $cek_semua_pemasukan / 2; // Membagi jumlah semua pemasukan
+        $tahap_1 = $cek_pemasukan_2 * 90 / 100; // Menghitung Jumlah anggaran pinjaman dari hasil pembagian 2,
+        $cek_total_pinjaman = $tahap_1 / 2; // Menghitung total Anggaran
+        $jatah = $cek_total_pinjaman * $data_anggaran_max_pinjaman->persen / 100; //Jath Persenan di ambil dari data anggaran
+
 
         $layout_pengeluaran = LayoutPengeluaran::first();
-
-        $cek_total_pinjaman = 500000;
 
         return view('frontend.pengeluaran.pinjaman.index', compact(
             'data_user',
@@ -321,7 +326,8 @@ class PengeluaranController extends Controller
             'saldo_bank',
             'uang_blum_diTF',
             'total_pengeluaran_kas_3',
-            'total_bayar_pinjaman_lebih'
+            'total_bayar_pinjaman_lebih',
+            'jatah'
         ));
     }
 

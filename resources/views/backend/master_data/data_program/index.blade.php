@@ -3,6 +3,7 @@
 @section('content')
 <!-- ./row -->
 <div class="row">
+    @if (auth()->user()->role->nama_role == 'Admin' || auth()->user()->role->nama_role == 'Ketua' || auth()->user()->role->nama_role == 'Sekertaris' ||auth()->user()->role->nama_role == 'Bendahara' || auth()->user()->role->nama_role == 'Penasehat')
     <div class="col-12 col-sm-6">
         <div class="card card-primary card-outline card-outline-tabs">
             <div class="card-body">
@@ -48,7 +49,7 @@
             <!-- /.card -->
         </div>
     </div>
-
+    @endif
     <div class="col-12 col-sm-6">
         <div class="card">
             <div class="card-header">
@@ -71,17 +72,19 @@
                         <?php $no++; ?>
                         <tr>
                             <td>{{$no}}</td>
-                            <td>{{$data->nama_program}}</td>
+                            <td><a href="{{route('program.show',Crypt::encrypt($data->id))}}" class="">{{$data->nama_program}}</a></td>
                             <td>
+                                @if (auth()->user()->role->nama_role == 'Admin' || auth()->user()->role->nama_role == 'Ketua' || auth()->user()->role->nama_role == 'Sekertaris' ||auth()->user()->role->nama_role == 'Bendahara' || auth()->user()->role->nama_role == 'Penasehat')
                                 <form action="{{route('program.destroy',Crypt::encrypt($data->id))}}" method="POST">
                                     @csrf
                                     @method('delete')
                                     <a href="{{route('program.show',Crypt::encrypt($data->id))}}" class=""><i class="nav-icon fas fa-book"></i></a>
                                     <a href="{{route('program.edit',Crypt::encrypt($data->id))}}" class=""><i class="nav-icon fas fa-pencil-alt"></i></a>
-                                    @if (auth()->user()->role == 'Admin')
+                                    @if (auth()->user()->role->nama_role == 'Admin')
                                     <button class="btn btn-link btn-sm mt-2"><i class="nav-icon fas fa-trash-alt" onclick="return confirm('Leres bade ngahapus data anu namina {{$data->nama}}  ?')"></i> </button>
                                     @endif
                                 </form>
+                                @endif
                             </td>
 
 

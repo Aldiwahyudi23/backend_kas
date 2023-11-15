@@ -7,6 +7,7 @@
     <div class="container-fluid">
         <!-- ./row -->
         <div class="row">
+            @if (auth()->user()->role->nama_role == 'Admin' || auth()->user()->role->nama_role == 'Ketua' || auth()->user()->role->nama_role == 'Sekertaris' ||auth()->user()->role->nama_role == 'Bendahara' || auth()->user()->role->nama_role == 'Penasehat')
             <div class="col-12 col-sm-6">
                 <div class="card card-primary card-outline card-outline-tabs">
                     <div class="card-body">
@@ -96,7 +97,7 @@
                     <!-- /.card -->
                 </div>
             </div>
-
+            @endif
             <div class="col-12 col-sm-6">
                 <div class="card">
                     <div class="card-header">
@@ -121,8 +122,9 @@
                                 <tr>
                                     <td>{{$no}}</td>
                                     <td>{{$data->kode}}</td>
-                                    <td>{{$data->nama_anggaran}}</td>
+                                    <td> <a href="{{route('anggaran.show',Crypt::encrypt($data->id))}}" class="">{{$data->nama_anggaran}}</a></td>
                                     <td>
+                                        @if (auth()->user()->role->nama_role == 'Admin' || auth()->user()->role->nama_role == 'Ketua' || auth()->user()->role->nama_role == 'Sekertaris' ||auth()->user()->role->nama_role == 'Bendahara' || auth()->user()->role->nama_role == 'Penasehat')
                                         <form action="{{route('anggaran.destroy',Crypt::encrypt($data->id))}}" method="POST">
                                             @csrf
                                             @method('delete')
@@ -132,6 +134,7 @@
                                             <button class="btn btn-link btn-sm mt-2"><i class="nav-icon fas fa-trash-alt" onclick="return confirm('Leres bade ngahapus data anu namina {{$data->nama}}  ?')"></i> </button>
                                             @endif
                                         </form>
+                                        @endif
                                     </td>
 
 
